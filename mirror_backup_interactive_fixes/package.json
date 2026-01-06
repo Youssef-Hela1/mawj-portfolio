@@ -1,0 +1,8 @@
+{
+  "name": "mawj-project",
+  "version": "1.0.0",
+  "description": "Mawj Project with Serverless CMS",
+  "dependencies": {
+    "@vercel/kv": "^1.0.0"
+  }
+}

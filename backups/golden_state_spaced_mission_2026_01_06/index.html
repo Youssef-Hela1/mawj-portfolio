@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mawj Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="splash">
+        <!-- Visual Wave at the bottom of splash -->
+        <div class="wave-container">
+            <svg viewBox="0 0 1440 320" preserveAspectRatio="none" class="wave-svg">
+                <path id="visual-wave-path" fill="#ffffff" fill-opacity="1" d=""></path>
+            </svg>
+        </div>
+
+        <div class="brand-overlay">
+            <div class="fixed-logo-container">
+                <img src="MAWJ_white.png" alt="Sizer" class="logo-sizer">
+                <img src="MAWJ_white.png" alt="Mawj Logo White" class="logo-white">
+            </div>
+
+            <!-- Full screen wrapper for Blue Logo -->
+            <div class="logo-blue-wrapper-fullscreen">
+                <!-- Centered container to match the fixed logo position -->
+                <div class="logo-blue-positioner">
+                    <div class="logo-blue"></div>
+                </div>
+                <h2 class="subtitle-indigo">RIDING THE DIGITAL WAVE</h2>
+            </div>
+
+            <h1 class="mawj-text">MAWJ</h1>
+            <h2 class="subtitle-base">RIDING THE DIGITAL WAVE</h2>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div class="scroll-text">Scroll</div>
+        </div>
+    </div>
+
+    <!-- SVG Defs for Clip Path (Hidden) -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <clipPath id="waveClip" clipPathUnits="userSpaceOnUse">
+                <path id="clip-wave-path" d=""></path>
+            </clipPath>
+        </defs>
+    </svg>
+
+    <div class="content">
+        <section class="mission-section">
+            <h2 class="mission-title">Our Mission</h2>
+            <p class="mission-text">
+                At MAWJ, our mission is to bring businesses online by creating powerful, modern, and accessible websites
+                that help them grow. Inspired by the meaning of our name — MAWJ (موج), the wave — we aim to be the force
+                that carries businesses into the digital world with confidence and momentum.
+            </p>
+            <br>
+            <p class="mission-text">
+                We believe every business, whether small or large, deserves a strong online presence. Our goal is to
+                remove barriers to going online by delivering clear design, reliable technology, and solutions tailored
+                to each client’s needs. We don’t just build websites — we create digital waves that help businesses
+                stand out, connect with their audience, and move forward in an ever-evolving digital landscape.
+            </p>
+        </section>
+
+        <section class="services-section">
+            <h2 class="services-title">Our Services</h2>
+            <div class="services-grid">
+                <!-- Landing Pages -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Landing Pages</h3>
+                        <p>High-conversion designs crafted to turn visitors into loyal customers.</p>
+                    </div>
+                </div>
+
+                <!-- Portfolios -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M22 7L12.4 18.6a2 2 0 0 1-2.9 0L2 10"/><path d="M22 7L12.4 18.6a2 2 0 0 0-2.9 0L2 7"/><path d="M2 7v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7"/>
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Portfolios</h3>
+                        <p>Showcase your expertise with stunning, personal branding that stands out.</p>
+                    </div>
+                </div>
+
+                <!-- Business Websites -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Business Websites</h3>
+                        <p>Scalable, professional platforms designed to grow your enterprise.</p>
+                    </div>
+                </div>
+
+                <!-- Dashboards & Tools -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Dashboards</h3>
+                        <p>Powerful data visualization and management tools for your business logic.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="featured-projects">
+            <h2 class="services-title">Featured Projects</h2>
+            <div id="projects-container">
+                <!-- Projects will be injected here via JS -->
+            </div>
+        </section>
+
+        <!-- Contact Wave Footer -->
+        <footer class="contact-section">
+            <div class="footer-wave">
+                <svg viewBox="0 0 2880 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <!-- Repeating Pattern 0-1440 and 1440-2880 for seamless loop -->
+                    <path fill="#0177BF" fill-opacity="1" d="
+                    M0,192 
+                    C240,288 480,288 720,192 
+                    C960,96 1200,96 1440,192 
+                    C1680,288 1920,288 2160,192 
+                    C2400,96 2640,96 2880,192 
+                    L2880,320 L0,320 Z">
+                    </path>
+                </svg>
+            </div>
+            <div class="contact-content">
+                <img src="MAWJ_white.png" alt="Mawj Logo" class="contact-logo">
+                <h2 class="contact-title">Ready to Ride the Wave?</h2>
+                <div class="contact-links">
+                    <!-- Action Buttons Row -->
+                    <div class="contact-actions">
+                        <a href="mailto:contact@mawj.com" class="btn-contact">Contact Us</a>
+                        <button id="phone-btn" class="btn-icon" aria-label="Show Phone Number">
+                            <!-- Phone Icon SVG -->
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                </path>
+                            </svg>
+                            <span id="phone-number" class="phone-display hidden">+1 (555) 123-4567</span>
+                        </button>
+                    </div>
+
+                    <!-- Social Icons Row -->
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                </path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="X (Twitter)">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+                                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p class="copyright">© 2026 MAWJ. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="#" id="privacy-link" class="legal-link">Privacy Policy</a>
+                    <a href="#" id="terms-link" class="legal-link">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Service Details Modal -->
+    <div id="service-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Service Title</h2>
+            <div id="modal-steps">
+                <!-- Steps will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mawj Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Premium Login Overlay */
+        #login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(1, 119, 191, 0.15);
+            /* Slight tint over blue splash */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        #login-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            animation: cardFloat 1s ease-out;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-card h1 {
+            font-family: 'Guilty Treasure', sans-serif;
+            color: #0177BF;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-card p {
+            color: #64748b;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .login-input:focus {
+            border-color: #0177BF;
+            box-shadow: 0 0 0 4px rgba(1, 119, 191, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #0177BF;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .login-btn:hover {
+            background: #01629c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(1, 119, 191, 0.2);
+        }
+
+        .error-toast {
+            color: #ef4444;
+            margin-top: 1rem;
+            display: none;
+            font-size: 0.9rem;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Premium Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <!-- Ensure logo path is correct relative to mirror/ -->
+            <img src="MAWJ_white.png"
+                style="width: 80px; margin-bottom: 1rem; filter: invert(32%) sepia(74%) saturate(2657%) hue-rotate(187deg) brightness(91%) contrast(101%);"
+                alt="MAWJ">
+            <h1>MAWJ</h1>
+            <p>Admin Access</p>
+            <form id="overlay-login-form">
+                <input type="email" id="admin-email" class="login-input" placeholder="name@example.com" required>
+                <input type="password" id="admin-password" class="login-input" placeholder="••••••••" required>
+                <button type="submit" class="login-btn">Unlock Mirror</button>
+                <div id="overlay-error" class="error-toast">Invalid credentials</div>
+            </form>
+        </div>
+    </div>
+    <div class="splash">
+        <!-- Visual Wave at the bottom of splash -->
+        <div class="wave-container">
+            <svg viewBox="0 0 1440 320" preserveAspectRatio="none" class="wave-svg">
+                <path id="visual-wave-path" fill="#ffffff" fill-opacity="1" d=""></path>
+            </svg>
+        </div>
+
+        <div class="brand-overlay">
+            <div class="fixed-logo-container">
+                <img src="MAWJ_white.png" alt="Sizer" class="logo-sizer">
+                <img src="MAWJ_white.png" alt="Mawj Logo White" class="logo-white">
+            </div>
+
+            <!-- Full screen wrapper for Blue Logo -->
+            <div class="logo-blue-wrapper-fullscreen">
+                <!-- Centered container to match the fixed logo position -->
+                <div class="logo-blue-positioner">
+                    <div class="logo-blue"></div>
+                </div>
+                <h2 class="subtitle-indigo">RIDING THE DIGITAL WAVE</h2>
+            </div>
+
+            <h1 class="mawj-text">MAWJ</h1>
+            <h2 class="subtitle-base">RIDING THE DIGITAL WAVE</h2>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div class="scroll-text">Scroll</div>
+        </div>
+    </div>
+
+    <!-- SVG Defs for Clip Path (Hidden) -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <clipPath id="waveClip" clipPathUnits="userSpaceOnUse">
+                <path id="clip-wave-path" d=""></path>
+            </clipPath>
+        </defs>
+    </svg>
+
+    <div class="content">
+        <section class="mission-section">
+            <h2 class="mission-title">Our Mission</h2>
+            <p class="mission-text">
+                At MAWJ, our mission is to bring businesses online by creating powerful, modern, and accessible websites
+                that help them grow. Inspired by the meaning of our name — MAWJ (موج), the wave — we aim to be the force
+                that carries businesses into the digital world with confidence and momentum.
+            </p>
+            <br>
+            <p class="mission-text">
+                We believe every business, whether small or large, deserves a strong online presence. Our goal is to
+                remove barriers to going online by delivering clear design, reliable technology, and solutions tailored
+                to each client’s needs. We don’t just build websites — we create digital waves that help businesses
+                stand out, connect with their audience, and move forward in an ever-evolving digital landscape.
+            </p>
+        </section>
+
+        <section class="services-section">
+            <h2 class="services-title">Our Services</h2>
+            <div class="services-grid">
+                <!-- Landing Pages -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <path d="M3 9h18" />
+                            <path d="M9 21V9" />
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Landing Pages</h3>
+                        <p>High-conversion designs crafted to turn visitors into loyal customers.</p>
+                    </div>
+                </div>
+
+                <!-- Portfolios -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M22 7L12.4 18.6a2 2 0 0 1-2.9 0L2 10" />
+                            <path d="M22 7L12.4 18.6a2 2 0 0 0-2.9 0L2 7" />
+                            <path d="M2 7v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7" />
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Portfolios</h3>
+                        <p>Showcase your expertise with stunning, personal branding that stands out.</p>
+                    </div>
+                </div>
+
+                <!-- Business Websites -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Business Websites</h3>
+                        <p>Scalable, professional platforms designed to grow your enterprise.</p>
+                    </div>
+                </div>
+
+                <!-- Dashboards & Tools -->
+                <div class="service-card">
+                    <div class="service-icon-wrapper">
+                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="3" y="3" width="7" height="9" />
+                            <rect x="14" y="3" width="7" height="5" />
+                            <rect x="14" y="12" width="7" height="9" />
+                            <rect x="3" y="16" width="7" height="5" />
+                        </svg>
+                    </div>
+                    <div class="service-content">
+                        <h3>Dashboards</h3>
+                        <p>Powerful data visualization and management tools for your business logic.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="featured-projects">
+            <h2 class="services-title">Featured Projects</h2>
+            <div id="add-project-btn"
+                style="text-align: center; margin-bottom: 2rem; cursor: pointer; color: #0177BF; opacity: 0.7; transition: opacity 0.3s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                <span style="display: block; font-size: 0.8rem; margin-top: 0.2rem;">Add Project</span>
+            </div>
+            <div id="projects-container">
+                <!-- Projects will be injected here via JS -->
+            </div>
+        </section>
+
+        <!-- Contact Wave Footer -->
+        <footer class="contact-section">
+            <div class="footer-wave">
+                <svg viewBox="0 0 2880 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <!-- Repeating Pattern 0-1440 and 1440-2880 for seamless loop -->
+                    <path fill="#0177BF" fill-opacity="1" d="
+                    M0,192 
+                    C240,288 480,288 720,192 
+                    C960,96 1200,96 1440,192 
+                    C1680,288 1920,288 2160,192 
+                    C2400,96 2640,96 2880,192 
+                    L2880,320 L0,320 Z">
+                    </path>
+                </svg>
+            </div>
+            <div class="contact-content">
+                <img src="MAWJ_white.png" alt="Mawj Logo" class="contact-logo">
+                <h2 class="contact-title">Ready to Ride the Wave?</h2>
+                <div class="contact-links">
+                    <!-- Action Buttons Row -->
+                    <div class="contact-actions">
+                        <a href="mailto:contact@mawj.com" class="btn-contact">Contact Us</a>
+                        <button id="phone-btn" class="btn-icon" aria-label="Show Phone Number">
+                            <!-- Phone Icon SVG -->
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                </path>
+                            </svg>
+                            <span id="phone-number" class="phone-display hidden">+1 (555) 123-4567</span>
+                        </button>
+                    </div>
+
+                    <!-- Social Icons Row -->
+                    <div class="social-icons">
+                        <a href="javascript:void(0)" class="social-icon" aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="javascript:void(0)" class="social-icon" aria-label="LinkedIn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                </path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                        <a href="javascript:void(0)" class="social-icon" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="javascript:void(0)" class="social-icon" aria-label="X (Twitter)">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+                                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p class="copyright">© 2026 MAWJ. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="#" id="privacy-link" class="legal-link">Privacy Policy</a>
+                    <a href="#" id="terms-link" class="legal-link">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Service Details Modal -->
+    <div id="service-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Service Title</h2>
+            <div id="modal-steps">
+                <!-- Steps will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Link Editor Modal -->
+    <div id="link-editor-modal" class="modal hidden" style="z-index: 20000;">
+        <div class="modal-overlay"></div>
+        <div class="login-card" style="position: relative; z-index: 20001; max-width: 400px; margin: 0 auto;">
+            <h1 style="font-size: 2rem; margin-bottom: 1rem;">Edit Link</h1>
+            <p style="margin-bottom: 1.5rem;">Enter the new URL for <span id="editor-platform-name"
+                    style="font-weight: bold; color: #0177BF;">Social Media</span></p>
+
+            <form id="link-editor-form">
+                <input type="url" id="editor-url-input" class="login-input" placeholder="https://" required>
+                <div id="editor-content-input" class="login-input hidden" contenteditable="true"
+                    style="font-family: inherit; font-size: 0.95rem; min-height: 200px; max-height: 400px; overflow-y: auto; margin-top: 1rem; text-align: left; background: white; color: #333; padding: 1rem; border: 1px solid #cbd5e1;">
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" id="editor-cancel-btn" class="login-btn"
+                        style="background: #e2e8f0; color: #475569;">Cancel</button>
+                    <button type="submit" class="login-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Wide Legal Document Editor Modal -->
+    <div id="legal-editor-modal" class="modal hidden" style="z-index: 20000;">
+        <div class="modal-overlay"></div>
+        <div class="login-card"
+            style="position: relative; z-index: 20001; max-width: 900px; width: 90%; margin: 2rem auto; height: 85vh; display: flex; flex-direction: column;">
+            <div
+                style="flex-shrink: 0; margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin: 0;">Edit Document</h1>
+                    <p style="margin: 0; color: #64748b;">Editing: <span id="legal-doc-title"
+                            style="font-weight: bold; color: #0177BF;">Privacy Policy</span></p>
+                </div>
+                <!-- Simple formatting toolbar (Visual only for now, or functional if easy) -->
+                <div style="font-size: 0.9rem; color: #94a3b8; font-style: italic;">
+                    Visual Editor Enabled
+                </div>
+            </div>
+
+            <form id="legal-editor-form" style="flex-grow: 1; display: flex; flex-direction: column; min-height: 0;">
+                <div id="legal-content-input" contenteditable="true"
+                    style="font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.6; flex-grow: 1; overflow-y: auto; text-align: left; background: #fff; color: #333; padding: 2rem; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);">
+                </div>
+
+                <div style="flex-shrink: 0; display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+                    <button type="button" id="legal-cancel-btn" class="login-btn"
+                        style="background: #e2e8f0; color: #475569; width: auto; padding: 0 2rem;">Cancel</button>
+                    <button type="submit" class="login-btn" style="width: auto; padding: 0 2rem;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Editor Modal -->
+    <div id="project-editor-modal" class="modal hidden" style="z-index: 20000;">
+        <div class="modal-overlay"></div>
+        <div class="login-card"
+            style="position: relative; z-index: 20001; max-width: 600px; width: 90%; margin: 2rem auto; max-height: 90vh; overflow-y: auto;">
+            <h1 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Add New Project</h1>
+
+            <form id="project-editor-form">
+                <!-- Main Project Info -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Project
+                        Title</label>
+                    <input type="text" id="proj-title" class="login-input" placeholder="e.g. Modern E-Commerce Platform"
+                        required>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Project
+                        Link (URL)</label>
+                    <input type="url" id="proj-url" class="login-input" placeholder="https://" required>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Project
+                        Thumbnail</label>
+                    <input type="text" id="proj-thumb-url" class="login-input" placeholder="Image URL (optional)">
+                    <input type="file" id="proj-thumb-file" class="login-input" accept="image/*">
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;">
+
+                <h3 style="margin-bottom: 1rem; color: #0177BF;">Case Study Details</h3>
+
+                <!-- Hidden Metadata -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label
+                            style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Category</label>
+                        <input type="text" id="proj-category" class="login-input" placeholder="e.g. Web Dev" required
+                            value="General">
+                    </div>
+                    <div>
+                        <label
+                            style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Date</label>
+                        <input type="text" id="proj-date" class="login-input" placeholder="e.g. 2026" required
+                            value="2026">
+                    </div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px dashed #e2e8f0; margin: 1.5rem 0;">
+
+                <!-- Client Section -->
+                <h4 style="margin-bottom: 0.5rem; color: #64748b;">1. About The Client</h4>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Client
+                        Paragraph</label>
+                    <textarea id="proj-client-text" class="login-input" rows="3" placeholder="Who is the client..."
+                        required></textarea>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Client
+                        Image</label>
+                    <input type="text" id="proj-client-url" class="login-input" placeholder="Image URL (optional)">
+                    <input type="file" id="proj-client-file" class="login-input" accept="image/*">
+                </div>
+
+                <!-- Challenges Section -->
+                <h4 style="margin-bottom: 0.5rem; color: #64748b; margin-top: 1rem;">2. The Challenges</h4>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Challenges
+                        Paragraph</label>
+                    <textarea id="proj-chal-text" class="login-input" rows="3" placeholder="What were the challenges..."
+                        required></textarea>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Challenges
+                        Image</label>
+                    <input type="text" id="proj-chal-url" class="login-input" placeholder="Image URL (optional)">
+                    <input type="file" id="proj-chal-file" class="login-input" accept="image/*">
+                </div>
+
+                <!-- Results Section -->
+                <h4 style="margin-bottom: 0.5rem; color: #64748b; margin-top: 1rem;">3. The Results</h4>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Results
+                        Paragraph</label>
+                    <textarea id="proj-res-text" class="login-input" rows="3" placeholder="What was achieved..."
+                        required></textarea>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: #475569;">Results
+                        Image</label>
+                    <input type="text" id="proj-res-url" class="login-input" placeholder="Image URL (optional)">
+                    <input type="file" id="proj-res-file" class="login-input" accept="image/*">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" id="proj-cancel-btn" class="login-btn"
+                        style="background: #e2e8f0; color: #475569;">Cancel</button>
+                    <button type="submit" class="login-btn">Add Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Login script moved to disable-navigation.js
+    </script>
+    <script src="disable-navigation.js?v=TIMESTAMP_HERE_OR_SOMETHING"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
