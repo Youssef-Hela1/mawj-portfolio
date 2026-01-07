@@ -621,8 +621,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render Changes
                 renderEnhancedProjects();
 
-                // Also cache to LS for backup
-                localStorage.setItem('mawj_mirror_projects', JSON.stringify(allProjects));
+                // Also cache to LS for backup (Safely)
+                try {
+                    localStorage.setItem('mawj_mirror_projects', JSON.stringify(allProjects));
+                } catch (e) {
+                    console.warn("LocalStorage quota exceeded. Backup skipped.", e);
+                    // Do not bubble up; we have Firestore.
+                }
 
                 closeProjectEditor();
 

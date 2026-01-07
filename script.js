@@ -344,9 +344,41 @@ function renderProjects() {
         // 1. Main Project Box (Link)
         const mainBox = document.createElement('div');
         mainBox.className = 'project-main';
-        mainBox.innerHTML = `<h3 class="project-title">${project.title}</h3>`;
+
+        // Matches disable-navigation.js logic
+        const thumbUrl = project.thumbnail;
+        const titleHeader = `
+            <div style="
+                padding: 24px;
+                min-height: 80px;
+                position: relative;
+                z-index: 2;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            ">
+                <h3 class="project-title" style="margin:0; color:white; font-size: 1.4rem; line-height: 1.2; background: transparent;">${project.title}</h3>
+            </div>
+        `;
+
+        let content = titleHeader;
+
+        if (thumbUrl && (thumbUrl.startsWith('http') || thumbUrl.startsWith('data:'))) {
+            mainBox.style.backgroundImage = `url('${thumbUrl}')`;
+            mainBox.style.backgroundSize = 'cover';
+            mainBox.style.backgroundRepeat = 'no-repeat';
+            mainBox.style.backgroundPosition = 'center';
+            // Overlay for readability
+            content = `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1; border-radius:inherit;"></div>` + content;
+            mainBox.style.color = 'white';
+        }
+
+        mainBox.innerHTML = content;
+
         mainBox.addEventListener('click', () => {
-            window.open(project.url, '_blank');
+            // If URL is set, open it? 
+            // Admin doesn't seem to set 'url' field in form? 
+            // Default form has 'url', let's check if it exists.
+            if (project.url && project.url !== '#') window.open(project.url, '_blank');
         });
 
         // 2. Case Study Box (Button)
@@ -360,7 +392,7 @@ function renderProjects() {
 
         card.appendChild(mainBox);
         card.appendChild(caseStudyBox);
-        projectsContainer.appendChild(card); // Correctly append to container
+        projectsContainer.appendChild(card);
     });
 }
 
