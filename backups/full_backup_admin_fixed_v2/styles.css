@@ -244,15 +244,15 @@ body::-webkit-scrollbar {
     }
 
     .mawj-text {
-        font-size: 38vw;
+        font-size: 30vw;
         top: 36%;
         letter-spacing: 1vw;
     }
 
     .subtitle-base,
     .subtitle-indigo {
-        font-size: 4.5vw;
-        top: calc(36% + 33vw);
+        font-size: 3.5vw;
+        top: calc(36% + 26vw);
         letter-spacing: 0.3vw;
         /* Increased to match width */
     }

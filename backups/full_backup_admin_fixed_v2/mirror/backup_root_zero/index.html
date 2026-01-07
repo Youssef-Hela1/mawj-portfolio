@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mawj Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="splash">
+        <!-- Visual Wave at the bottom of splash -->
+        <div class="wave-container">
+            <svg viewBox="0 0 1440 320" preserveAspectRatio="none" class="wave-svg">
+                <path id="visual-wave-path" fill="#ffffff" fill-opacity="1" d=""></path>
+            </svg>
+        </div>
+
+        <div class="brand-overlay">
+            <div class="fixed-logo-container">
+                <img src="MAWJ_white.png" alt="Sizer" class="logo-sizer">
+                <img src="MAWJ_white.png" alt="Mawj Logo White" class="logo-white">
+            </div>
+
+            <!-- Full screen wrapper for Blue Logo -->
+            <div class="logo-blue-wrapper-fullscreen">
+                <!-- Centered container to match the fixed logo position -->
+                <div class="logo-blue-positioner">
+                    <div class="logo-blue"></div>
+                </div>
+                <h2 class="subtitle-indigo">RIDING THE DIGITAL WAVE</h2>
+            </div>
+
+            <h1 class="mawj-text">MAWJ</h1>
+            <h2 class="subtitle-base">RIDING THE DIGITAL WAVE</h2>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div class="scroll-text">Scroll</div>
+        </div>
+    </div>
+
+    <!-- SVG Defs for Clip Path (Hidden) -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <clipPath id="waveClip" clipPathUnits="userSpaceOnUse">
+                <path id="clip-wave-path" d=""></path>
+            </clipPath>
+        </defs>
+    </svg>
+
+    <div class="content"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
