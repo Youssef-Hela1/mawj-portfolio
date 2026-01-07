@@ -999,8 +999,8 @@ function initAdminLogin() {
         const email = document.getElementById('admin-email').value.trim();
         const password = document.getElementById('admin-password').value.trim();
 
-        // Simple hardcoded check (as per original requirements)
-        if (email.toLowerCase() === 'admin@mawj.com' && password === 'admin123') {
+        // Restored correct credentials
+        if (email.toLowerCase() === 'mawj.eg@outlook.com' && password === 'M123456') {
             sessionStorage.setItem('mirrorAuth', 'true');
             overlay.classList.add('hidden');
             document.body.style.overflow = '';
