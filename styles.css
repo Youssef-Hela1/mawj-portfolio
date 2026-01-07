@@ -256,6 +256,10 @@ body::-webkit-scrollbar {
         letter-spacing: 0.3vw;
         /* Increased to match width */
     }
+
+    .mission-section {
+        padding-top: 20vh;
+    }
 }
 
 .subtitle-base {
