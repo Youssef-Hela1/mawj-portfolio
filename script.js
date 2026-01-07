@@ -375,6 +375,11 @@ function renderProjects() {
             mainBox.style.color = 'white';
         }
 
+        mainBox.style.display = 'flex';
+        mainBox.style.flexDirection = 'column';
+        mainBox.style.justifyContent = 'flex-start';
+        mainBox.style.alignItems = 'stretch';
+
         mainBox.innerHTML = content;
 
         mainBox.addEventListener('click', () => {
@@ -460,10 +465,8 @@ function openCaseStudy(index) {
     document.body.style.overflow = 'hidden';
 }
 
-renderProjects();
-
-// Initial Render
-renderProjects();
+// Initial Render removed to allow loadContent to handle it safely
+// renderProjects();
 
 // Observe Featured Projects for Fade In
 const featuredSection = document.querySelector('.featured-projects');
