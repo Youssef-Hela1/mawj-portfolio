@@ -265,7 +265,6 @@ function setupInlineEditing() {
 
 // --- Firebase / Storage Logic ---
 let localDataCache = {};
-let allProjects = []; // Global array to hold projects from Firestore/LocalStorage
 
 // Migrate/Load Data
 async function initFirestoreData() {
@@ -288,49 +287,6 @@ async function initFirestoreData() {
         applySavedData();
     } catch (e) {
         console.error("Error loading Firestore data:", e);
-    }
-}
-
-async function initProjectsData() {
-    console.log("Called initProjectsData");
-    if (!window.db) {
-        console.error("No window.db found in initProjectsData");
-        return;
-    }
-    try {
-        const snapshot = await db.collection('projects').get();
-        console.log(`Firestore Projects Snapshot: ${snapshot.size} docs`);
-
-        if (!snapshot.empty) {
-            allProjects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            console.log("Loaded projects from Firestore:", allProjects);
-        } else {
-            console.warn("Firestore projects empty, checking LocalStorage...");
-            // If Firestore is empty, try to seed from localStorage
-            const lsProjects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
-            if (lsProjects.length > 0) {
-                console.log("Seeding Firestore from LocalStorage projects:", lsProjects);
-                for (const project of lsProjects) {
-                    // Add without 'id' as Firestore will generate one
-                    const { id, ...projectData } = project;
-                    await db.collection('projects').add(projectData);
-                }
-                // Re-fetch to get Firestore generated IDs
-                const newSnapshot = await db.collection('projects').get();
-                allProjects = newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log("Projects seeded to Firestore and reloaded:", allProjects);
-            } else {
-                console.log("LocalStorage projects also empty. Starting with no projects.");
-                allProjects = [];
-            }
-        }
-        renderEnhancedProjects(); // Render projects after loading them
-    } catch (e) {
-        console.error("Error loading projects from Firestore:", e);
-        // Fallback to localStorage if Firestore fails
-        console.log("Falling back to LocalStorage for projects due to Firestore error.");
-        allProjects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
-        renderEnhancedProjects();
     }
 }
 
@@ -456,8 +412,8 @@ function openProjectEditor(index = -1) {
         modalTitle.textContent = 'Edit Project';
         submitBtn.textContent = 'Save Changes';
 
-        // Use allProjects directly
-        const project = allProjects[editingProjectIndex];
+        const projects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
+        const project = projects[editingProjectIndex];
 
         if (project) {
             console.log("Populating project data:", project);
@@ -635,13 +591,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             },
                             {
                                 type: "text-image",
-                                title: "The Results", // Added missing title for results section
-                                text: getVal('proj-res-text'),
-                                image: finalResImg
                             }
                         ]
                     }
                 };
+
+                // const existingProjects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
 
                 if (editingProjectIndex >= 0) {
                     const original = allProjects[editingProjectIndex];
@@ -683,35 +638,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-async function deleteProject(index) {
-    const project = allProjects[index];
-    if (!project) return;
-
-    // Optimistic Update
-    allProjects.splice(index, 1);
-    renderEnhancedProjects();
-
-    try {
-        if (project.id) {
-            await db.collection('projects').doc(project.id).delete();
-            console.log("Deleted project from Firestore:", project.id);
-            window.location.reload(); // Force sync
-        } else {
-            console.warn("Project had no ID, only removed from local cache");
-            window.location.reload(); // Force sync
-        }
-
-        // Update LocalStorage Backup
-        try {
-            localStorage.setItem('mawj_mirror_projects', JSON.stringify(allProjects));
-        } catch (e) { }
-
-    } catch (err) {
-        console.error("Error deleting project:", err);
-        alert("Failed to delete project from server. It might reappear on refresh.");
-    }
-}
 
 
 // --- Main Init ---
@@ -768,14 +694,12 @@ if (editorModal) editorModal.querySelector('.modal-overlay').addEventListener('c
 
 // --- Render Logic (Full Override) ---
 function renderEnhancedProjects() {
-    console.log("renderEnhancedProjects called. Total Projects:", allProjects.length);
     const container = document.getElementById('projects-container');
-    if (!container) {
-        console.error("Projects container not found!");
-        return;
-    }
+    if (!container) return;
 
-    // projects should reference the loaded allProjects
+    // Always fetch from localStorage, which we ensure is seeded
+    // Use cached allProjects instead of LS
+    // const projects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
     const projects = allProjects;
 
     container.innerHTML = '';
@@ -783,10 +707,10 @@ function renderEnhancedProjects() {
     // Add "Add Project" Button Card
     const addCard = document.createElement('div');
     addCard.className = 'project-card add-project-card';
-    // Removed ID to avoid CSS conflict
+    addCard.id = 'add-project-btn';
     addCard.innerHTML = `
-        <div style="font-size: 3rem; color: #cbd5e1;">+</div>
-        <div style="color: #64748b; font-weight: 500;">Add New Project</div>
+        <div class="add-icon-circle">+</div>
+        <p>Add New Project</p>
     `;
     addCard.addEventListener('click', () => {
         openProjectEditor();
@@ -794,128 +718,110 @@ function renderEnhancedProjects() {
     container.appendChild(addCard);
 
     projects.forEach((project, index) => {
-        try {
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            // Add fade in only if new? Let's just keep it simple.
-            card.style.animation = 'fadeIn 0.5s ease-out forwards';
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        // Add fade in only if new? Let's just keep it simple.
+        card.style.animation = 'fadeIn 0.5s ease-out forwards';
 
-            // ... Rendering Logic ...
-            // Need to update edit/delete buttons to pass index OR ID
-            // Passing index is fine since we rebuild from array
+        // ... Rendering Logic ...
+        // Need to update edit/delete buttons to pass index OR ID
+        // Passing index is fine since we rebuild from array
 
-            // 1. Main Box
-            const mainBox = document.createElement('div');
-            mainBox.className = 'project-main';
+        // 1. Main Box
+        const mainBox = document.createElement('div');
+        mainBox.className = 'project-main';
 
-            // Thumbnail Logic: Prefer explicit thumbnail, then fallback to first section image
-            let thumbUrl = project.thumbnail;
-            if (!thumbUrl && project.caseStudy?.sections?.[0]?.image) {
-                thumbUrl = project.caseStudy.sections[0].image;
-            }
-
-            // Title Header with blue background
-            const titleHeader = `
-                <div style="
-                    width: 100%;
-                    background-color: #0177BF;
-                    padding: 20px 15px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    min-height: 80px;
-                    position: relative;
-                    z-index: 2;
-                    border-top-left-radius: 0;
-                    border-top-right-radius: 0;
-                ">
-                    <h3 class="project-title" style="margin:0; color:white; font-size: 1.4rem; line-height: 1.2; background: transparent;">${project.title}</h3>
-                </div>
-            `;
-
-            let content = titleHeader;
-
-            if (thumbUrl && (thumbUrl.startsWith('http') || thumbUrl.startsWith('data:'))) {
-                mainBox.style.backgroundImage = `url('${thumbUrl}')`;
-                mainBox.style.backgroundSize = 'cover';
-                mainBox.style.backgroundRepeat = 'no-repeat';
-                mainBox.style.backgroundPosition = 'center';
-                content = `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1; border-radius:inherit;"></div>` + content;
-                mainBox.style.color = 'white';
-            }
-
-            mainBox.innerHTML = content;
-            mainBox.style.display = 'flex';
-            mainBox.style.flexDirection = 'column';
-            mainBox.style.alignItems = 'stretch';
-            mainBox.style.justifyContent = 'flex-start';
-            mainBox.style.paddingTop = '0';
-            mainBox.style.textAlign = 'center';
-
-            mainBox.addEventListener('click', () => window.open(project.url, '_blank'));
-
-            const caseStudyBox = document.createElement('button');
-            caseStudyBox.className = 'project-case-study';
-            caseStudyBox.textContent = 'READ CASE STUDY';
-            caseStudyBox.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openLocalCaseStudy(project);
-            });
-
-            // ACTIONS ROW
-            const actionsRow = document.createElement('div');
-            actionsRow.style.display = 'flex';
-            actionsRow.style.gap = '8px';
-            actionsRow.style.marginTop = '8px';
-
-            const editBtn = document.createElement('button');
-            editBtn.className = 'edit-project-btn';
-            editBtn.textContent = 'Edit';
-            editBtn.dataset.index = index;
-            editBtn.style.flex = '1';
-            editBtn.style.padding = '8px';
-            editBtn.style.border = '1px solid #cbd5e1';
-            editBtn.style.borderRadius = '8px';
-            editBtn.style.background = 'white';
-            editBtn.style.color = '#475569';
-            editBtn.style.cursor = 'pointer';
-
-            const delBtn = document.createElement('button');
-            delBtn.className = 'delete-project-btn';
-            delBtn.textContent = 'Delete';
-            delBtn.dataset.index = index;
-            delBtn.style.flex = '1';
-            delBtn.style.padding = '8px';
-            delBtn.style.border = '1px solid #ef4444';
-            delBtn.style.borderRadius = '8px';
-            delBtn.style.background = '#fef2f2';
-            delBtn.style.color = '#ef4444';
-            delBtn.style.cursor = 'pointer';
-
-            // ATTACH LISTENERS
-            editBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                // Pass the index or project to the editor
-                openProjectEditor(index);
-            });
-
-            delBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (confirm('Are you sure you want to delete this project?')) {
-                    deleteProject(index);
-                }
-            });
-
-            actionsRow.appendChild(editBtn);
-            actionsRow.appendChild(delBtn);
-
-            card.appendChild(mainBox);
-            card.appendChild(caseStudyBox);
-            card.appendChild(actionsRow); // Append actions
-            container.appendChild(card);
-        } catch (err) {
-            console.error("Error rendering project at index " + index, err, project);
+        // Thumbnail Logic: Prefer explicit thumbnail, then fallback to first section image
+        let thumbUrl = project.thumbnail;
+        if (!thumbUrl && project.caseStudy?.sections?.[0]?.image) {
+            thumbUrl = project.caseStudy.sections[0].image;
         }
+
+        // Title Header with blue background
+        const titleHeader = `
+            <div style="
+                width: 100%;
+                background-color: #0177BF;
+                padding: 20px 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 80px;
+                position: relative;
+                z-index: 2;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            ">
+                <h3 class="project-title" style="margin:0; color:white; font-size: 1.4rem; line-height: 1.2; background: transparent;">${project.title}</h3>
+            </div>
+        `;
+
+        let content = titleHeader;
+
+        if (thumbUrl && (thumbUrl.startsWith('http') || thumbUrl.startsWith('data:'))) {
+            mainBox.style.backgroundImage = `url('${thumbUrl}')`;
+            mainBox.style.backgroundSize = 'cover';
+            mainBox.style.backgroundRepeat = 'no-repeat';
+            mainBox.style.backgroundPosition = 'center';
+            content = `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1; border-radius:inherit;"></div>` + content;
+            mainBox.style.color = 'white';
+        }
+
+        mainBox.innerHTML = content;
+        mainBox.style.display = 'flex';
+        mainBox.style.flexDirection = 'column';
+        mainBox.style.alignItems = 'stretch';
+        mainBox.style.justifyContent = 'flex-start';
+        mainBox.style.paddingTop = '0';
+        mainBox.style.textAlign = 'center';
+
+        mainBox.addEventListener('click', () => window.open(project.url, '_blank'));
+
+        const caseStudyBox = document.createElement('button');
+        caseStudyBox.className = 'project-case-study';
+        caseStudyBox.textContent = 'READ CASE STUDY';
+        caseStudyBox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openLocalCaseStudy(project);
+        });
+
+        // ACTIONS ROW
+        const actionsRow = document.createElement('div');
+        actionsRow.style.display = 'flex';
+        actionsRow.style.gap = '8px';
+        actionsRow.style.marginTop = '8px';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'edit-project-btn';
+        editBtn.textContent = 'Edit';
+        editBtn.dataset.index = index;
+        editBtn.style.flex = '1';
+        editBtn.style.padding = '8px';
+        editBtn.style.border = '1px solid #cbd5e1';
+        editBtn.style.borderRadius = '8px';
+        editBtn.style.background = 'white';
+        editBtn.style.color = '#475569';
+        editBtn.style.cursor = 'pointer';
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-project-btn';
+        delBtn.textContent = 'Delete';
+        delBtn.dataset.index = index;
+        delBtn.style.flex = '1';
+        delBtn.style.padding = '8px';
+        delBtn.style.border = '1px solid #ef4444';
+        delBtn.style.borderRadius = '8px';
+        delBtn.style.background = '#fef2f2';
+        delBtn.style.color = '#ef4444';
+        delBtn.style.cursor = 'pointer';
+
+        actionsRow.appendChild(editBtn);
+        actionsRow.appendChild(delBtn);
+
+        card.appendChild(mainBox);
+        card.appendChild(caseStudyBox);
+        card.appendChild(actionsRow); // Append actions
+        container.appendChild(card);
     });
 }
 
