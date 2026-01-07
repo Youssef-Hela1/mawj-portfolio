@@ -171,12 +171,9 @@ window.addEventListener('scroll', () => {
 });
 
 window.addEventListener('resize', updateUI);
-window.addEventListener('resize', updateUI);
 window.addEventListener('DOMContentLoaded', () => {
     fixMask();
     updateUI();
-    // Load Dynamic Content
-    loadContent();
 });
 
 // Service Modal Logic
@@ -269,73 +266,73 @@ serviceCards.forEach(card => {
 
 // --- Featured Projects Logic ---
 
-// --- Fetched Projects Logic ---
-let projects = []; // Populated via Firestore
+const projects = [
+    {
+        title: "Fashion Photography: Capturing the Essence of Style",
+        url: "#",
+        caseStudy: {
+            header: {
+                category: "Fashion News",
+                date: "January 2026",
+                title: "Fashion Photography: Capturing the Essence of Style",
+            },
+            sections: [
+                {
+                    type: "text-image",
+                    title: "About The Client",
+                    text: "The client, a renowned luxury fashion house established in 1950, was looking to revitalize their brand image for the digital age while maintaining their heritage of elegance. They required a comprehensive visual strategy that would not only showcase their latest collection but also tell a compelling story about sustainability and modern craftsmanship. The goal was to create a series of editorial-style images that could be used across multiple platforms, including high-gloss magazines, social media campaigns, and their flagship website. This required meticulous planning, from scouting unique architectural locations that mirrored the collection's geometric lines to selecting a diverse cast of models that represented the brand's new inclusive direction.",
+                    image: "C:/Users/youss/.gemini/antigravity/brain/4e513b14-ab24-4920-af6c-75aab50f2f47/fashion_client_planning_1767713813202.png"
+                },
+                {
+                    type: "image-text",
+                    title: "The Challenges",
+                    text: "Fashion photography can be categorized into editorial and commercial. The main challenge was to balance the artistic expression required for editorial spreads with the commercial viability needed for the client's campaign.",
+                    image: "C:/Users/youss/.gemini/antigravity/brain/4e513b14-ab24-4920-af6c-75aab50f2f47/fashion_photo_shoot_challenges_1767713829811.png"
+                },
+                {
+                    type: "text-image",
+                    title: "The Results",
+                    text: "The campaign resulted in a 40% increase in brand engagement. The images were featured in major fashion publications, establishing a new visual standard for the brand.",
+                    image: "C:/Users/youss/.gemini/antigravity/brain/4e513b14-ab24-4920-af6c-75aab50f2f47/fashion_campaign_results_1767713851747.png"
+                }
+            ]
+        }
+    },
+    {
+        title: "Project Beta: Digital Art Gallery",
+        url: "#",
+        caseStudy: {
+            header: {
+                category: "Art Review",
+                date: "February 2026",
+                title: "Digital Art Gallery",
+                subtitle: "Where Technology Meets Creativity"
+            },
+            sections: [
+                {
+                    type: "text-image",
+                    title: "About The Client",
+                    text: "A visionary artist seeking a digital gallery that reflects their unique style without overshadowing the artwork itself.",
+                    image: "c:/Users/youss/OneDrive/Desktop/Mawj Project/uploaded_image_1767594234273.png"
+                },
+                {
+                    type: "image-text",
+                    title: "The Challenges",
+                    text: "Balancing high-resolution imagery with performance on mobile devices was critical.",
+                    image: "c:/Users/youss/OneDrive/Desktop/Mawj Project/uploaded_image_1767593598873.png"
+                },
+                {
+                    type: "text-image",
+                    title: "The Results",
+                    text: "The new platform won three design awards and saw a 200% increase in inquiry forms.",
+                    image: "c:/Users/youss/OneDrive/Desktop/Mawj Project/uploaded_image_1767592175326.png"
+                }
+            ]
+        }
+    }
+];
 
 const projectsContainer = document.getElementById('projects-container');
-
-async function loadContent() {
-    // If on Admin site, let disable-navigation.js handle data/content
-    if (window.IS_ADMIN) return;
-
-    if (!window.db) {
-        console.warn("Firebase DB not linked. Dynamic content unavailable.");
-        return;
-    }
-
-    try {
-        // 1. Fetch Settings (Text content)
-        const settingsDoc = await db.collection('settings').doc('general').get();
-        if (settingsDoc.exists) {
-            const data = settingsDoc.data();
-            applySiteSettings(data);
-        }
-
-        // 2. Fetch Projects
-        const snapshot = await db.collection('projects').get();
-        if (!snapshot.empty) {
-            projects = snapshot.docs.map(doc => doc.data());
-            renderProjects();
-        }
-
-        // 3. Populate Legal Content (Lazy or Eager)
-        // We'll keep the object structure but fill it if needed
-    } catch (e) {
-        console.error("Error loading content:", e);
-    }
-}
-
-function applySiteSettings(data) {
-    // Similar to disable-navigation logic but for read-only
-    if (data.contact_email) {
-        const btn = document.querySelector('.btn-contact');
-        if (btn) btn.setAttribute('href', `mailto:${data.contact_email}`);
-    }
-    if (data.contact_phone) {
-        const span = document.getElementById('phone-number');
-        if (span) span.textContent = data.contact_phone;
-    }
-
-    // Socials
-    const icons = document.querySelectorAll('.social-icon');
-    icons.forEach(icon => {
-        const key = icon.getAttribute('aria-label');
-        if (data[key]) icon.setAttribute('href', data[key]);
-    });
-
-    // Text Content
-    const map = [
-        { selector: '.contact-title', key: 'contact_title_text' },
-        { selector: '.mission-title', key: 'section_mission_title' },
-        { selector: '.mission-text', key: 'section_mission_text' },
-        { selector: '.services-section .services-title', key: 'section_services_title' },
-        { selector: '.featured-projects .services-title', key: 'section_projects_title' }
-    ];
-    map.forEach(item => {
-        const el = document.querySelector(item.selector);
-        if (el && data[item.key]) el.innerText = data[item.key];
-    });
-}
 
 function renderProjects() {
     if (!projectsContainer) return;
@@ -347,46 +344,9 @@ function renderProjects() {
         // 1. Main Project Box (Link)
         const mainBox = document.createElement('div');
         mainBox.className = 'project-main';
-
-        // Matches disable-navigation.js logic
-        const thumbUrl = project.thumbnail;
-        const titleHeader = `
-            <div style="
-                padding: 24px;
-                min-height: 80px;
-                position: relative;
-                z-index: 2;
-                border-top-left-radius: 0;
-                border-top-right-radius: 0;
-            ">
-                <h3 class="project-title" style="margin:0; color:white; font-size: 1.4rem; line-height: 1.2; background: transparent;">${project.title}</h3>
-            </div>
-        `;
-
-        let content = titleHeader;
-
-        if (thumbUrl && (thumbUrl.startsWith('http') || thumbUrl.startsWith('data:'))) {
-            mainBox.style.backgroundImage = `url('${thumbUrl}')`;
-            mainBox.style.backgroundSize = 'cover';
-            mainBox.style.backgroundRepeat = 'no-repeat';
-            mainBox.style.backgroundPosition = 'center';
-            // Overlay for readability
-            content = `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1; border-radius:inherit;"></div>` + content;
-            mainBox.style.color = 'white';
-        }
-
-        mainBox.style.display = 'flex';
-        mainBox.style.flexDirection = 'column';
-        mainBox.style.justifyContent = 'flex-start';
-        mainBox.style.alignItems = 'stretch';
-
-        mainBox.innerHTML = content;
-
+        mainBox.innerHTML = `<h3 class="project-title">${project.title}</h3>`;
         mainBox.addEventListener('click', () => {
-            // If URL is set, open it? 
-            // Admin doesn't seem to set 'url' field in form? 
-            // Default form has 'url', let's check if it exists.
-            if (project.url && project.url !== '#') window.open(project.url, '_blank');
+            window.open(project.url, '_blank');
         });
 
         // 2. Case Study Box (Button)
@@ -400,7 +360,7 @@ function renderProjects() {
 
         card.appendChild(mainBox);
         card.appendChild(caseStudyBox);
-        projectsContainer.appendChild(card);
+        projectsContainer.appendChild(card); // Correctly append to container
     });
 }
 
@@ -465,8 +425,10 @@ function openCaseStudy(index) {
     document.body.style.overflow = 'hidden';
 }
 
-// Initial Render removed to allow loadContent to handle it safely
-// renderProjects();
+renderProjects();
+
+// Initial Render
+renderProjects();
 
 // Observe Featured Projects for Fade In
 const featuredSection = document.querySelector('.featured-projects');
@@ -487,15 +449,57 @@ if (phoneBtn) {
     });
 }
 
+/* Legal Modals Logic */
+const legalContent = {
+    privacy: {
+        title: "Privacy Policy",
+        text: `
+            <p style="margin-bottom: 1rem;"><strong>Last Updated: January 2026</strong></p>
+            <p style="margin-bottom: 1rem;">At MAWJ, we value your privacy. This policy outlines how we collect, use, and protect your information when you use our website and services.</p>
+            <p style="margin-bottom: 1rem;"><strong>1. Information Collection</strong><br>We collect information you provide directly to us, such as when you contact us via email or sign up for our newsletter.</p>
+            <p style="margin-bottom: 1rem;"><strong>2. Use of Information</strong><br>We use the information we collect to provide, maintain, and improve our services, and to communicate with you.</p>
+            <p style="margin-bottom: 1rem;"><strong>3. Data Protection</strong><br>We implement security measures designed to protect your information from unauthorized access.</p>
+            <p>If you have any questions about this Privacy Policy, please contact us.</p>
+        `
+    },
+    terms: {
+        title: "Terms of Service",
+        text: `
+            <p style="margin-bottom: 1rem;"><strong>Effective Date: January 2026</strong></p>
+            <p style="margin-bottom: 1rem;">Welcome to MAWJ. By accessing or using our website, you agree to be bound by these Terms of Service.</p>
+            <p style="margin-bottom: 1rem;"><strong>1. Acceptance of Terms</strong><br>By accessing this website, you are agreeing to be bound by these website Terms and Conditions of Use, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.</p>
+            
+            <p style="margin-bottom: 1rem;"><strong>2. Use License</strong><br>Permission is granted to temporarily download one copy of the materials (information or software) on MAWJ's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+            <ul style="margin-bottom: 1rem; padding-left: 20px; list-style-type: disc;">
+                <li>modify or copy the materials;</li>
+                <li>use the materials for any commercial purpose, or for any public display (commercial or non-commercial);</li>
+                <li>attempt to decompile or reverse engineer any software contained on MAWJ's website;</li>
+                <li>remove any copyright or other proprietary notations from the materials; or</li>
+                <li>transfer the materials to another person or "mirror" the materials on any other server.</li>
+            </ul>
 
+            <p style="margin-bottom: 1rem;"><strong>3. Disclaimer</strong><br>The materials on MAWJ's website are provided "as is". MAWJ makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+
+            <p style="margin-bottom: 1rem;"><strong>4. Limitations</strong><br>In no event shall MAWJ or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on MAWJ's website.</p>
+
+            <p style="margin-bottom: 1rem;"><strong>5. Revisions and Errata</strong><br>The materials appearing on MAWJ's website could include technical, typographical, or photographic errors. MAWJ does not warrant that any of the materials on its website are accurate, complete, or current.</p>
+
+            <p style="margin-bottom: 1rem;"><strong>6. Site Terms of Use Modifications</strong><br>MAWJ may revise these terms of use for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these Terms and Conditions of Use.</p>
+
+            <p style="margin-bottom: 1rem;"><strong>7. Governing Law</strong><br>Any claim relating to MAWJ's website shall be governed by the laws of the State of without regard to its conflict of law provisions.</p>
+            
+            <p style="margin-bottom: 1rem;"><strong>SCROLL TEST SECTION</strong><br>To demonstrate the scrolling functionality requested, we are including additional filler text below.</p>
+            ${Array(10).fill('<p style="margin-bottom: 1rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>').join('')}
+        `
+    }
+};
 
 const privacyBtn = document.getElementById('privacy-link');
 const termsBtn = document.getElementById('terms-link');
 
 console.log('Legal Buttons:', { privacyBtn, termsBtn }); // Debug check
 
-async function openLegalModal(type) {
-    await fetchLegal(type); // Ensure freshest content
+function openLegalModal(type) {
     const data = legalContent[type];
     if (!data) return;
 
