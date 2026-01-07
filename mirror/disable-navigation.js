@@ -696,8 +696,10 @@ async function deleteProject(index) {
         if (project.id) {
             await db.collection('projects').doc(project.id).delete();
             console.log("Deleted project from Firestore:", project.id);
+            window.location.reload(); // Force sync
         } else {
             console.warn("Project had no ID, only removed from local cache");
+            window.location.reload(); // Force sync
         }
 
         // Update LocalStorage Backup
@@ -781,10 +783,10 @@ function renderEnhancedProjects() {
     // Add "Add Project" Button Card
     const addCard = document.createElement('div');
     addCard.className = 'project-card add-project-card';
-    addCard.id = 'add-project-btn';
+    // Removed ID to avoid CSS conflict
     addCard.innerHTML = `
-        <div class="add-icon-circle">+</div>
-        <p>Add New Project</p>
+        <div style="font-size: 3rem; color: #cbd5e1;">+</div>
+        <div style="color: #64748b; font-weight: 500;">Add New Project</div>
     `;
     addCard.addEventListener('click', () => {
         openProjectEditor();
