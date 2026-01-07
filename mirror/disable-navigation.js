@@ -207,10 +207,8 @@ document.addEventListener('click', function (e) {
         e.stopImmediatePropagation();
         const index = deleteBtn.dataset.index;
         if (confirm('Are you sure you want to delete this project?')) {
-            const projects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
-            projects.splice(index, 1);
-            localStorage.setItem('mawj_mirror_projects', JSON.stringify(projects));
-            renderEnhancedProjects();
+            // Updated to use the robust async function with reload
+            deleteProject(index);
         }
         return;
     }
@@ -691,6 +689,74 @@ if (editorForm) {
 if (cancelBtn) cancelBtn.addEventListener('click', closeLinkEditor);
 if (editorModal) editorModal.querySelector('.modal-overlay').addEventListener('click', closeLinkEditor);
 
+
+// --- Global Projects Cache ---
+let allProjects = [];
+
+async function initProjectsData() {
+    if (!window.db) {
+        console.warn("Firestore not available! Using local backup.");
+        allProjects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
+        renderEnhancedProjects();
+        return;
+    }
+
+    try {
+        const snapshot = await db.collection('projects').get();
+        if (!snapshot.empty) {
+            allProjects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            console.log("Projects loaded from Firestore:", allProjects.length);
+        } else {
+            console.log("No projects in Firestore. Checking LocalStorage backup...");
+            allProjects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
+
+            // Optional: Seed Firestore if empty?
+            if (allProjects.length > 0) {
+                // seed logic could go here
+            }
+        }
+
+        // Update Local Backup
+        localStorage.setItem('mawj_mirror_projects', JSON.stringify(allProjects));
+
+        renderEnhancedProjects();
+    } catch (e) {
+        console.error("Error loading projects:", e);
+        allProjects = JSON.parse(localStorage.getItem('mawj_mirror_projects') || '[]');
+        renderEnhancedProjects();
+    }
+}
+
+
+async function deleteProject(index) {
+    if (!allProjects[index]) return;
+    const project = allProjects[index];
+
+    // Optimistic Update
+    allProjects.splice(index, 1);
+    renderEnhancedProjects();
+
+    try {
+        if (project.id) {
+            await db.collection('projects').doc(project.id).delete();
+            console.log("Deleted project from Firestore:", project.id);
+            window.location.reload(); // Force sync
+        } else {
+            console.warn("Project had no ID, only removed from local cache");
+            window.location.reload(); // Force sync
+        }
+
+        // Update LocalStorage Backup
+        try {
+            localStorage.setItem('mawj_mirror_projects', JSON.stringify(allProjects));
+        } catch (e) { }
+
+    } catch (err) {
+        console.error("Error deleting project:", err);
+        alert("Failed to delete project from server. It might reappear on refresh.");
+        window.location.reload();
+    }
+}
 
 // --- Render Logic (Full Override) ---
 function renderEnhancedProjects() {
