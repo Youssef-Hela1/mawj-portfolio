@@ -863,6 +863,20 @@ function renderEnhancedProjects() {
             delBtn.style.color = '#ef4444';
             delBtn.style.cursor = 'pointer';
 
+            // ATTACH LISTENERS
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Pass the index or project to the editor
+                openProjectEditor(index);
+            });
+
+            delBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm('Are you sure you want to delete this project?')) {
+                    deleteProject(index);
+                }
+            });
+
             actionsRow.appendChild(editBtn);
             actionsRow.appendChild(delBtn);
 
