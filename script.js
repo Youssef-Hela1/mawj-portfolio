@@ -275,6 +275,9 @@ let projects = []; // Populated via Firestore
 const projectsContainer = document.getElementById('projects-container');
 
 async function loadContent() {
+    // If on Admin site, let disable-navigation.js handle data/content
+    if (window.IS_ADMIN) return;
+
     if (!window.db) {
         console.warn("Firebase DB not linked. Dynamic content unavailable.");
         return;
