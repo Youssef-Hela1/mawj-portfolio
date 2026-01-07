@@ -684,6 +684,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+async function deleteProject(index) {
+    const project = allProjects[index];
+    if (!project) return;
+
+    // Optimistic Update
+    allProjects.splice(index, 1);
+    renderEnhancedProjects();
+
+    try {
+        if (project.id) {
+            await db.collection('projects').doc(project.id).delete();
+            console.log("Deleted project from Firestore:", project.id);
+        } else {
+            console.warn("Project had no ID, only removed from local cache");
+        }
+
+        // Update LocalStorage Backup
+        try {
+            localStorage.setItem('mawj_mirror_projects', JSON.stringify(allProjects));
+        } catch (e) { }
+
+    } catch (err) {
+        console.error("Error deleting project:", err);
+        alert("Failed to delete project from server. It might reappear on refresh.");
+    }
+}
+
 
 // --- Main Init ---
 window.addEventListener('DOMContentLoaded', () => {
