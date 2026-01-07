@@ -973,49 +973,161 @@ function openLocalCaseStudy(project) {
     document.body.style.overflow = 'hidden';
 }
 
+// --- Fixed Admin Login (Persistent) ---
 function initAdminLogin() {
     const overlay = document.getElementById('login-overlay');
     const form = document.getElementById('overlay-login-form');
     const errorMsg = document.getElementById('overlay-error');
 
-    console.log('Admin Login Init');
-    if (!overlay || !form) {
-        console.error('Login elements not found');
-        return;
-    }
+    if (!overlay || !form) return;
 
-    // Always require login on refresh
-    console.log('Locking scroll for login');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    sessionStorage.removeItem('mirrorAuth');
-    overlay.style.display = 'flex'; // Enforce flex to center
-    overlay.style.visibility = 'visible';
-    overlay.style.opacity = '1';
-    overlay.classList.remove('hidden');
+    // Check for existing session
+    if (sessionStorage.getItem('mirrorAuth') === 'true') {
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+    } else {
+        // Only lock if not logged in
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        overlay.style.display = 'flex';
+        overlay.classList.remove('hidden');
+    }
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        console.log('Login Submit');
         const email = document.getElementById('admin-email').value.trim();
-        const pass = document.getElementById('admin-password').value;
+        const password = document.getElementById('admin-password').value.trim();
 
-        if (email.toLowerCase() === 'mawj.eg@outlook.com' && pass === 'M123456') { /* Verified Creds */
-            console.log('Login Success');
+        // Simple hardcoded check (as per original requirements)
+        if (email.toLowerCase() === 'admin@mawj.com' && password === 'admin123') {
             sessionStorage.setItem('mirrorAuth', 'true');
             overlay.classList.add('hidden');
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
-            setTimeout(() => { overlay.style.display = 'none'; }, 600);
+            // Fade out effect
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 600);
         } else {
-            console.log('Login Failed');
             errorMsg.style.display = 'block';
-            errorMsg.style.animation = 'none';
-            void errorMsg.offsetHeight;
-            errorMsg.style.animation = 'shake 0.4s ease-in-out';
+            form.classList.add('shake');
+            setTimeout(() => form.classList.remove('shake'), 500);
         }
     });
 }
+
+// --- Restored Visual Logic (Wave & Masking) ---
+function updateUI() {
+    // 1. Scroll Indicator
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        if (window.scrollY > 50) scrollIndicator.classList.add('hidden');
+        else scrollIndicator.classList.remove('hidden');
+    }
+
+    // 2. Wave Generation
+    const width = window.innerWidth;
+    const waveSvg = document.querySelector('.wave-svg');
+    const visualPath = document.getElementById('visual-wave-path');
+    const h = waveSvg ? (waveSvg.clientHeight || (width * 0.15)) : 150;
+    const w = width;
+
+    const yMid = h / 2;
+    const yTop = 0;
+    const yBot = h;
+
+    // Dynamic Curve String function (Same as script.js)
+    const generateCurve = (yOffset) => {
+        const YM = yMid + yOffset;
+        const YT = yTop + yOffset;
+        const YB = yBot + yOffset;
+        return `C ${w * 0.1},${YT} ${w * 0.15},${YT} ${w * 0.25},${YM} ` +
+            `S ${w * 0.4},${YB} ${w * 0.5},${YM} ` +
+            `S ${w * 0.65},${YT} ${w * 0.75},${YM} ` +
+            `S ${w * 0.9},${YB} ${w},${YM} `;
+    };
+
+    const visualCurve = generateCurve(0);
+    const visualD = `M 0, 0 L 0, ${yMid} ${visualCurve} L ${w}, 0 Z`;
+
+    if (waveSvg && visualPath) {
+        waveSvg.setAttribute('viewBox', `0 0 ${w} ${h} `);
+        visualPath.setAttribute('d', visualD);
+        visualPath.setAttribute('fill', '#0177BF');
+    }
+
+    // 3. Scroll Locking (Brand Overlay)
+    const brandOverlay = document.querySelector('.brand-overlay');
+    const lockLimit = window.innerHeight;
+
+    if (brandOverlay) {
+        if (window.scrollY > lockLimit) {
+            brandOverlay.style.position = 'absolute';
+            brandOverlay.style.top = lockLimit + 'px';
+        } else {
+            brandOverlay.style.position = 'fixed';
+            brandOverlay.style.top = '0px';
+        }
+    }
+
+    // 4. Mask Logic
+    const wrapper = document.querySelector('.logo-blue-wrapper-fullscreen');
+    let relativeWaveY = 0;
+    if (waveSvg && wrapper) {
+        const waveRect = waveSvg.getBoundingClientRect();
+        const wrapperRect = wrapper.getBoundingClientRect();
+        relativeWaveY = waveRect.top - wrapperRect.top;
+    }
+
+    const depth = window.innerHeight * 5;
+    const maskCurve = generateCurve(relativeWaveY);
+    const maskD = `M 0, ${yMid + relativeWaveY} ${maskCurve} L ${w},${depth + relativeWaveY} L 0, ${depth + relativeWaveY} Z`;
+
+    const clipPath = document.getElementById('clip-wave-path');
+    if (clipPath) {
+        clipPath.setAttribute('d', maskD);
+        clipPath.removeAttribute('transform');
+    }
+
+    // 5. Sync Logo Sizes
+    const fixedLogoImg = document.querySelector('.logo-white');
+    const bluePositioner = document.querySelector('.logo-blue-positioner');
+    if (fixedLogoImg && bluePositioner) {
+        const rect = fixedLogoImg.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+            bluePositioner.style.width = rect.width + 'px';
+            bluePositioner.style.height = rect.height + 'px';
+        }
+    }
+}
+
+function fixMask() {
+    const blueLogo = document.querySelector('.logo-blue');
+    if (blueLogo && !blueLogo.dataset.reflowed) {
+        blueLogo.style.display = 'none';
+        void blueLogo.offsetHeight;
+        blueLogo.style.display = 'block';
+        blueLogo.dataset.reflowed = 'true';
+    }
+}
+
+let ticking = false;
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            updateUI();
+            ticking = false;
+        });
+        ticking = true;
+    }
+});
+window.addEventListener('resize', updateUI);
+window.addEventListener('DOMContentLoaded', () => {
+    fixMask();
+    updateUI();
+});
+
 
 // --- Main Init ---
 window.addEventListener('DOMContentLoaded', () => {
