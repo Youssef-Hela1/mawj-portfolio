@@ -42,6 +42,36 @@ const defaultLegalContent = {
     }
 };
 
+// --- Animation Observer (Restored) ---
+const missionSection = document.querySelector('.mission-section');
+const servicesSection = document.querySelector('.services-section');
+const featuredSection = document.querySelector('.featured-projects');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+if (missionSection) observer.observe(missionSection);
+if (servicesSection) observer.observe(servicesSection);
+if (featuredSection) observer.observe(featuredSection);
+
+// --- Scroll & UI Logic ---
+function updateUI() {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        if (window.scrollY > 50) scrollIndicator.classList.add('hidden');
+        else scrollIndicator.classList.remove('hidden');
+    }
+}
+window.addEventListener('scroll', updateUI);
+window.addEventListener('resize', updateUI);
+updateUI(); // Initial call
+
 // Default Projects Data
 const defaultProjects = [
     {
