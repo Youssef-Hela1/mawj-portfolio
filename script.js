@@ -354,7 +354,7 @@ function renderProjects() {
             <div style="
                 width: 100%;
                 background-color: #0177BF;
-                padding: 15px 10px;
+                padding: 10px 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
