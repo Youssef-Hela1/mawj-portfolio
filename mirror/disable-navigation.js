@@ -149,8 +149,13 @@ document.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
         const currentUrl = socialIcon.getAttribute('href').startsWith('http') ? socialIcon.getAttribute('href') : '';
-        const platform = socialIcon.getAttribute('aria-label') || 'Social Media';
+        const platformRaw = socialIcon.getAttribute('aria-label') || 'Social Media';
+        const platform = platformRaw.trim(); // Ensure no trailing spaces
+
+        console.log(`Editing social icon: ${platform}`); // Debug
+
         openLinkEditor(platform, currentUrl, (newUrl) => {
+            console.log(`Saving ${platform}: ${newUrl}`); // Debug
             socialIcon.setAttribute('href', newUrl);
             saveToStorage(platform, newUrl);
             flashElement(socialIcon);
@@ -348,8 +353,10 @@ function flashElement(el) {
 function applySavedData() {
     const icons = document.querySelectorAll('.social-icon');
     icons.forEach(icon => {
-        const platform = icon.getAttribute('aria-label');
-        if (localDataCache[platform]) icon.setAttribute('href', localDataCache[platform]);
+        const rawKey = icon.getAttribute('aria-label');
+        if (rawKey && localDataCache[rawKey.trim()]) {
+            icon.setAttribute('href', localDataCache[rawKey.trim()]);
+        }
     });
     const contactBtn = document.querySelector('.btn-contact');
     if (contactBtn && localDataCache['contact_email']) contactBtn.setAttribute('href', `mailto:${localDataCache['contact_email']}`);

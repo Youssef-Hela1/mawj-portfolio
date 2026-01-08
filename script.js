@@ -319,8 +319,11 @@ function applySiteSettings(data) {
     // Socials
     const icons = document.querySelectorAll('.social-icon');
     icons.forEach(icon => {
-        const key = icon.getAttribute('aria-label');
-        if (data[key]) icon.setAttribute('href', data[key]);
+        const rawKey = icon.getAttribute('aria-label');
+        if (rawKey) {
+            const key = rawKey.trim();
+            if (data[key]) icon.setAttribute('href', data[key]);
+        }
     });
 
     // Text Content
