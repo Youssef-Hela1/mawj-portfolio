@@ -841,11 +841,11 @@ function renderEnhancedProjects() {
             <div style="
                 width: 100%;
                 background-color: #0177BF;
-                padding: 20px 15px;
+                padding: 15px 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                min-height: 80px;
+                min-height: auto;
                 position: relative;
                 z-index: 2;
                 border-top-left-radius: 0;
