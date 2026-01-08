@@ -499,6 +499,31 @@ const termsBtn = document.getElementById('terms-link');
 
 console.log('Legal Buttons:', { privacyBtn, termsBtn }); // Debug check
 
+let legalContent = {};
+
+async function fetchLegal(type) {
+    if (legalContent[type]) return; // Already loaded
+
+    if (!window.db) {
+        console.warn("Firestore not available");
+        return;
+    }
+
+    try {
+        const docId = type === 'privacy' ? 'legal_privacy' : 'legal_terms';
+        const doc = await db.collection('settings').doc(docId).get();
+        if (doc.exists) {
+            legalContent[type] = doc.data();
+        } else {
+            console.warn(`No legal document found for ${type}`);
+            legalContent[type] = { title: "Not Found", text: "Content not available." };
+        }
+    } catch (e) {
+        console.error("Error fetching legal:", e);
+        legalContent[type] = { title: "Error", text: "Failed to load content." };
+    }
+}
+
 async function openLegalModal(type) {
     await fetchLegal(type); // Ensure freshest content
     const data = legalContent[type];
