@@ -995,30 +995,6 @@ body::-webkit-scrollbar {
     text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-
-    .copyright,
-    .legal-links {
-        position: static;
-        /* Remove absolute positioning */
-        text-align: center;
-        /* Center text */
-        margin: 1rem auto;
-        /* Add spacing */
-        width: 100%;
-        /* Full width for centering */
-        justify-content: center;
-        /* Center flex items */
-    }
-
-    .legal-links {
-        flex-direction: column;
-        /* Stack links vertically */
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-}
-
 .project-case-study:hover {
     background-color: #0177BF;
     color: white;
