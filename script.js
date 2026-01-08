@@ -352,7 +352,12 @@ function renderProjects() {
         const thumbUrl = project.thumbnail;
         const titleHeader = `
             <div style="
-                padding: 24px;
+                width: 100%;
+                background-color: #0177BF;
+                padding: 20px 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 min-height: 80px;
                 position: relative;
                 z-index: 2;
@@ -370,8 +375,8 @@ function renderProjects() {
             mainBox.style.backgroundSize = 'cover';
             mainBox.style.backgroundRepeat = 'no-repeat';
             mainBox.style.backgroundPosition = 'center';
-            // Overlay for readability
-            content = `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1; border-radius:inherit;"></div>` + content;
+            // Overlay for readability (Reduced to 0.2)
+            content = `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.2); z-index:1; border-radius:inherit;"></div>` + content;
             mainBox.style.color = 'white';
         }
 
