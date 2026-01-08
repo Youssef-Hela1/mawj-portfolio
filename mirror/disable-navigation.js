@@ -619,6 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             },
                             {
                                 type: "text-image",
+                                title: "The Results",
+                                text: getVal('proj-res-text'),
+                                image: finalResImg
                             }
                         ]
                     }
