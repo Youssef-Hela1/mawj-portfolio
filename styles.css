@@ -1217,6 +1217,21 @@ body::-webkit-scrollbar {
     transform: translateX(0);
 }
 
+/* Force Blue Theme on Scroll (for Mobile and Multi-layer fallback) */
+.nav-container.scrolled .nav-pill {
+    background: rgba(1, 119, 191, 0.08) !important;
+    border: 1px solid rgba(1, 119, 191, 0.4) !important;
+}
+
+.nav-container.scrolled .hamburger span {
+    background-color: #0177BF !important;
+}
+
+.nav-container.scrolled .nav-link {
+    color: #0177BF !important;
+    font-weight: 600;
+}
+
 .nav-pill {
     display: flex;
     align-items: center;
