@@ -33,16 +33,6 @@ function updateUI() {
         }
     }
 
-    // Toggle navbar position
-    const navContainers = document.querySelectorAll('.nav-container');
-    navContainers.forEach(nav => {
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
-
     // --- Wave Generation ---
     const width = window.innerWidth;
     const waveSvg = document.querySelector('.wave-svg');
@@ -200,50 +190,9 @@ window.addEventListener('resize', updateUI);
 window.addEventListener('DOMContentLoaded', () => {
     fixMask();
     updateUI();
-    initNavbar();
     // Load Dynamic Content
     loadContent();
 });
-
-function initNavbar() {
-    const toggles = document.querySelectorAll('.nav-toggle');
-    const navContainers = document.querySelectorAll('.nav-container');
-
-    toggles.forEach(btn => {
-        btn.addEventListener('click', () => {
-            navContainers.forEach(nav => nav.classList.toggle('nav-open'));
-        });
-    });
-
-    // Smooth scroll for nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetSelector = link.getAttribute('href');
-            const targetEl = document.querySelector(targetSelector);
-
-            if (targetEl) {
-                // Determine header offset if any
-                const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-
-                // Close nav on click
-                navContainers.forEach(nav => nav.classList.remove('nav-open'));
-            }
-        });
-    });
-
-    // Close nav on scroll or click outside
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            navContainers.forEach(nav => nav.classList.remove('nav-open'));
-        }
-    }, { passive: true });
-}
 
 // Service Modal Logic
 const serviceDetails = {

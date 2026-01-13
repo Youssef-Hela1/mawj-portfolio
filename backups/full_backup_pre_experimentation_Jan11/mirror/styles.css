@@ -46,18 +46,9 @@ body::-webkit-scrollbar {
     flex-direction: column;
     align-items: center;
     opacity: 1;
-    transition: opacity 0.2s ease, transform 0.5s ease;
-    /* Fast fade transition */
-    z-index: 2000;
-    /* Brought to the very front */
+    transition: opacity 0.5s ease, transform 0.5s ease;
     color: white;
     font-family: sans-serif;
-}
-
-.scroll-indicator.hidden {
-    opacity: 0 !important;
-    pointer-events: none;
-    /* transition: none removed to allow fast fade */
 }
 
 .mouse {
@@ -118,7 +109,7 @@ body::-webkit-scrollbar {
 
 .fixed-logo-container {
     position: absolute;
-    top: 33%;
+    top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 150px;
@@ -149,7 +140,7 @@ body::-webkit-scrollbar {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 3000;
+    z-index: 200;
     pointer-events: none;
     clip-path: url(#waveClip);
     -webkit-clip-path: url(#waveClip);
@@ -159,7 +150,7 @@ body::-webkit-scrollbar {
 .fixed-logo-container,
 .logo-blue-positioner {
     position: absolute;
-    top: 33%;
+    top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 12vw;
@@ -197,7 +188,7 @@ body::-webkit-scrollbar {
 /* Responsive MAWJ Text */
 .mawj-text {
     position: absolute;
-    top: 50%;
+    top: 42%;
     /* Adjusted per user request */
     left: 50%;
     transform: translate(-50%, 0);
@@ -225,7 +216,7 @@ body::-webkit-scrollbar {
 .subtitle-base,
 .subtitle-indigo {
     position: absolute;
-    top: calc(50% + 16.5vw);
+    top: calc(42% + 16.5vw);
     left: 50%;
     transform: translate(-50.5%, 0);
     /* Visual center correction (Nudged Left) */
@@ -249,25 +240,21 @@ body::-webkit-scrollbar {
     .fixed-logo-container,
     .logo-blue-positioner {
         width: 25vw;
-        top: 28%;
+        top: 20%;
     }
 
     .mawj-text {
-        font-size: 38vw;
-        top: 44%;
+        font-size: 30vw;
+        top: 36%;
         letter-spacing: 1vw;
     }
 
     .subtitle-base,
     .subtitle-indigo {
-        font-size: 4.5vw;
-        top: calc(44% + 33vw);
+        font-size: 3.5vw;
+        top: calc(36% + 26vw);
         letter-spacing: 0.3vw;
         /* Increased to match width */
-    }
-
-    .mission-section {
-        padding-top: 110vh;
     }
 }
 
@@ -312,8 +299,8 @@ body::-webkit-scrollbar {
 }
 
 .mission-section {
-    padding-top: 110vh;
-    /* Increased to 130vh to push it even further down */
+    padding-top: 95vh;
+    /* Increased to 95vh to push it further down */
     padding-bottom: 10vh;
     padding-left: 5%;
     padding-right: 7%;
@@ -331,18 +318,15 @@ body::-webkit-scrollbar {
 }
 
 .mission-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 3rem;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-family: 'Guilty Treasure', sans-serif;
+    font-size: 5rem;
     color: #0177BF;
     margin-bottom: 2rem;
-    text-align: center;
 }
 
 .mission-text {
     font-family: 'Arial', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #0177BF;
     max-width: 800px;
     margin: 0 auto;
@@ -366,10 +350,9 @@ body::-webkit-scrollbar {
 }
 
 .services-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 3rem;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-family: 'Guilty Treasure', sans-serif;
+    font-size: 4rem;
+    /* Slightly smaller for elegance */
     color: #0177BF;
     margin-bottom: 3rem;
     text-align: center;
@@ -441,7 +424,7 @@ body::-webkit-scrollbar {
 .service-content h3 {
     font-family: 'Outfit', sans-serif;
     /* Clean Sans */
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: #1e293b;
     /* Dark Slate */
@@ -488,7 +471,7 @@ body::-webkit-scrollbar {
     }
 
     .services-title {
-        /* font-size: 3rem; Inherited from base */
+        font-size: 3rem;
     }
 }
 
@@ -594,7 +577,7 @@ body::-webkit-scrollbar {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #cbd5e1;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -838,13 +821,12 @@ body::-webkit-scrollbar {
 }
 
 .contact-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 3rem;
-    font-weight: 600;
-    color: white;
+    font-family: 'Guilty Treasure', sans-serif;
+    font-size: 2.5rem;
+    /* Reduced font size */
     margin-bottom: 1rem;
-    letter-spacing: 1px;
-    text-align: center;
+    /* Reduced margin */
+    letter-spacing: 2px;
 }
 
 .contact-links {
@@ -1009,30 +991,6 @@ body::-webkit-scrollbar {
     text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-
-    .copyright,
-    .legal-links {
-        position: static;
-        /* Remove absolute positioning */
-        text-align: center;
-        /* Center text */
-        margin: 1rem auto;
-        /* Add spacing */
-        width: 100%;
-        /* Full width for centering */
-        justify-content: center;
-        /* Center flex items */
-    }
-
-    .legal-links {
-        flex-direction: column;
-        /* Stack links vertically */
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-}
-
 .project-case-study:hover {
     background-color: #0177BF;
     color: white;
@@ -1101,7 +1059,7 @@ body::-webkit-scrollbar {
 }
 
 .sleek-section:last-child {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 
@@ -1198,169 +1156,5 @@ body::-webkit-scrollbar {
 
     .sleek-modal {
         padding: 2rem 1.5rem;
-    }
-}
-
-/* --- Collapsible Navbar --- */
-.nav-container {
-    position: fixed;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2000;
-    pointer-events: auto;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nav-container.scrolled {
-    left: 5%;
-    transform: translateX(0);
-}
-
-.nav-pill {
-    display: flex;
-    align-items: center;
-    border-radius: 50px;
-    padding: 6px;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 48px;
-    /* Circular initial state */
-    height: 48px;
-    overflow: hidden;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-.nav-open .nav-pill {
-    width: 480px;
-    /* Expanded width to fit links */
-    padding-right: 20px;
-}
-
-.nav-toggle {
-    background: none;
-    border: none;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.hamburger {
-    width: 18px;
-    height: 12px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.hamburger span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    transition: all 0.3s ease;
-    border-radius: 2px;
-}
-
-/* Base Version (Visible on Blue Splash) */
-.brand-overlay .nav-pill {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.brand-overlay .hamburger span {
-    background-color: white;
-}
-
-.brand-overlay .nav-link {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-/* Clipped Version (Visible on White Background) */
-.logo-blue-wrapper-fullscreen .nav-pill {
-    background: rgba(1, 119, 191, 0.08);
-    border: 1px solid rgba(1, 119, 191, 0.4);
-    box-shadow: 0 4px 20px rgba(0, 80, 130, 0.15);
-}
-
-.logo-blue-wrapper-fullscreen .hamburger span {
-    background-color: #0177BF;
-}
-
-.logo-blue-wrapper-fullscreen .nav-link {
-    color: #0177BF !important;
-    font-weight: 600;
-}
-
-/* Common Link Styles */
-.nav-links {
-    display: flex;
-    gap: 24px;
-    padding: 0 20px;
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.nav-open .nav-links {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 0.2s;
-}
-
-.nav-link {
-    text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    transition: all 0.2s ease;
-}
-
-.nav-link:hover {
-    transform: translateY(-1px);
-    opacity: 0.7;
-}
-
-/* Toggle Animations */
-.nav-open .hamburger span:nth-child(1) {
-    transform: translateY(5px) rotate(45deg);
-}
-
-.nav-open .hamburger span:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-}
-
-.nav-open .hamburger span:nth-child(3) {
-    transform: translateY(-5px) rotate(-45deg);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .nav-container {
-        top: 20px;
-    }
-
-    .nav-open .nav-pill {
-        width: 320px;
-        gap: 15px;
-    }
-
-    .nav-links {
-        gap: 15px;
-        padding: 0 10px;
-    }
-
-    .nav-link {
-        font-size: 9px;
-        letter-spacing: 0.5px;
     }
 }

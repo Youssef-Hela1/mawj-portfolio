@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#0177BF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Shield Outline -->
+  <path d="M3 2l2 18 7 4 7-4 2-18H3z"/>
+  <!-- The '3' Outline (Single Line Representation) -->
+  <path d="M17 6h-8l1 4h5.5l-1 4.5c-.5 2-2.5 3.5-4.5 3"/>
+</svg>

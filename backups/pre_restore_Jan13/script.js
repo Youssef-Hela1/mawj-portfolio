@@ -26,22 +26,12 @@ function updateUI() {
 
     // Hide/Show Scroll Indicator (Safe check)
     if (scrollIndicator) {
-        if (window.scrollY > 5) {
+        if (window.scrollY > 50) {
             scrollIndicator.classList.add('hidden');
         } else {
             scrollIndicator.classList.remove('hidden');
         }
     }
-
-    // Toggle navbar position
-    const navContainers = document.querySelectorAll('.nav-container');
-    navContainers.forEach(nav => {
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
 
     // --- Wave Generation ---
     const width = window.innerWidth;
@@ -145,33 +135,6 @@ function updateUI() {
         clipPath.setAttribute('d', maskD);
         clipPath.removeAttribute('transform');
     }
-
-    // --- Settle Animation Logic ---
-    // Make logo/text rise slightly as we scroll (0 to 300px)
-    const settleProgress = Math.min(window.scrollY / 300, 1);
-    const settleOffset = 50 * (1 - settleProgress); // Starts at 50px, ends at 0px
-
-    // Apply settle transform to elements
-    const logoContainer = document.querySelector('.fixed-logo-container');
-    const mawjText = document.querySelector('.mawj-text');
-    const subtitles = document.querySelectorAll('.subtitle-base, .subtitle-indigo');
-    const bluePositioner = document.querySelector('.logo-blue-positioner');
-
-    if (logoContainer) logoContainer.style.transform = `translate(-50%, calc(-50% + ${settleOffset}px))`;
-    if (mawjText) mawjText.style.transform = `translate(-50%, ${settleOffset}px)`;
-    if (bluePositioner) bluePositioner.style.transform = `translate(-50%, calc(-50% + ${settleOffset}px))`;
-    subtitles.forEach(s => s.style.transform = `translate(-50.5%, ${settleOffset}px)`);
-
-    // 3. Sync Logo Sizes (Already handles bluePositioner size)
-    const fixedLogoImg = document.querySelector('.logo-white');
-
-    if (fixedLogoImg && bluePositioner) {
-        const rect = fixedLogoImg.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-            bluePositioner.style.width = rect.width + 'px';
-            bluePositioner.style.height = rect.height + 'px';
-        }
-    }
 }
 
 function fixMask() {
@@ -200,50 +163,9 @@ window.addEventListener('resize', updateUI);
 window.addEventListener('DOMContentLoaded', () => {
     fixMask();
     updateUI();
-    initNavbar();
     // Load Dynamic Content
     loadContent();
 });
-
-function initNavbar() {
-    const toggles = document.querySelectorAll('.nav-toggle');
-    const navContainers = document.querySelectorAll('.nav-container');
-
-    toggles.forEach(btn => {
-        btn.addEventListener('click', () => {
-            navContainers.forEach(nav => nav.classList.toggle('nav-open'));
-        });
-    });
-
-    // Smooth scroll for nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetSelector = link.getAttribute('href');
-            const targetEl = document.querySelector(targetSelector);
-
-            if (targetEl) {
-                // Determine header offset if any
-                const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-
-                // Close nav on click
-                navContainers.forEach(nav => nav.classList.remove('nav-open'));
-            }
-        });
-    });
-
-    // Close nav on scroll or click outside
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            navContainers.forEach(nav => nav.classList.remove('nav-open'));
-        }
-    }, { passive: true });
-}
 
 // Service Modal Logic
 const serviceDetails = {

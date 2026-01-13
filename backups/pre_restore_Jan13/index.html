@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mawj Project</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Outfit:wght@300;400;600&display=swap"
-        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -21,58 +18,29 @@
         </div>
 
         <div class="brand-overlay">
-            <nav class="nav-container">
-                <div class="nav-pill">
-                    <button class="nav-toggle" aria-label="Toggle Navigation">
-                        <div class="hamburger">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </button>
-                    <div class="nav-links">
-                        <a href=".mission-section" class="nav-link">MISSION</a>
-                        <a href=".services-section" class="nav-link">SERVICES</a>
-                        <a href=".featured-projects" class="nav-link">PROJECTS</a>
-                        <a href=".contact-section" class="nav-link">CONTACT</a>
+            <!-- Premium Glass Layer -->
+            <div class="glass-panel"></div>
+
+            <div class="brand-elements-container">
+                <!-- Bottom Layer (Visible on Blue Splash) -->
+                <div class="brand-layer layer-white">
+                    <div class="logo-container-inner">
+                        <img src="Mawj 3D.png" alt="Mawj Logo 3D" class="logo-white">
                     </div>
+                    <!-- MAWJ text is blue, making it invisible on blue splash -->
+                    <h1 class="mawj-text text-blue">MAWJ</h1>
+                    <h2 class="subtitle text-blue">RIDING THE DIGITAL WAVE</h2>
                 </div>
-            </nav>
 
-            <div class="fixed-logo-container">
-                <img src="MAWJ_white.png" alt="Sizer" class="logo-sizer">
-                <img src="MAWJ_white.png" alt="Mawj Logo White" class="logo-white">
-            </div>
-
-            <!-- Full screen wrapper for Blue Logo -->
-            <div class="logo-blue-wrapper-fullscreen">
-                <nav class="nav-container">
-                    <div class="nav-pill">
-                        <button class="nav-toggle" aria-label="Toggle Navigation">
-                            <div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </button>
-                        <div class="nav-links">
-                            <a href=".mission-section" class="nav-link">MISSION</a>
-                            <a href=".services-section" class="nav-link">SERVICES</a>
-                            <a href=".featured-projects" class="nav-link">PROJECTS</a>
-                            <a href=".contact-section" class="nav-link">CONTACT</a>
-                        </div>
+                <!-- Top Layer (Clipped - Visible Only on White Content Background) -->
+                <div class="logo-blue-wrapper-fullscreen brand-layer layer-blue">
+                    <div class="logo-container-inner">
+                        <img src="Mawj 3D.png" alt="Mawj Logo 3D" class="logo-blue-img">
                     </div>
-                </nav>
-
-                <!-- Centered container to match the fixed logo position -->
-                <div class="logo-blue-positioner">
-                    <div class="logo-blue"></div>
+                    <h1 class="mawj-text text-blue">MAWJ</h1>
+                    <h2 class="subtitle text-dark-blue">RIDING THE DIGITAL WAVE</h2>
                 </div>
-                <h2 class="subtitle-indigo">RIDING THE DIGITAL WAVE</h2>
             </div>
-
-            <h1 class="mawj-text">MAWJ</h1>
-            <h2 class="subtitle-base">RIDING THE DIGITAL WAVE</h2>
         </div>
 
         <div class="scroll-indicator">

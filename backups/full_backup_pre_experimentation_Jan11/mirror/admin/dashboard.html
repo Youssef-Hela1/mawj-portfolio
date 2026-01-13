@@ -4,14 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mawj Project</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Outfit:wght@300;400;600&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>Mawj Project - Admin Dashboard</title>
+    <!-- Point to parent directory -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- AUTH CHECK SCRIPT -->
+    <script>
+        // Check if page was reloaded
+        if (performance.getEntriesByType("navigation")[0].type === "reload") {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'index.html';
+        }
+
+        if (!sessionStorage.getItem('isAdminLoggedIn')) {
+            window.location.href = 'index.html';
+        }
+    </script>
 </head>
 
 <body>
+    <!-- Admin Ribbon to distinguish from public site -->
+    <div
+        style="background: #000; color: #fff; text-align: center; padding: 5px; font-size: 0.8rem; font-family: sans-serif; position: relative; z-index: 9999;">
+        ADMIN MODE - <a href="#" onclick="logout()" style="color: #4ade80; text-decoration: underline;">Logout</a>
+    </div>
+
+    <script>
+        function logout() {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'index.html';
+        }
+    </script>
+
     <div class="splash">
         <!-- Visual Wave at the bottom of splash -->
         <div class="wave-container">
@@ -21,49 +46,13 @@
         </div>
 
         <div class="brand-overlay">
-            <nav class="nav-container">
-                <div class="nav-pill">
-                    <button class="nav-toggle" aria-label="Toggle Navigation">
-                        <div class="hamburger">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </button>
-                    <div class="nav-links">
-                        <a href=".mission-section" class="nav-link">MISSION</a>
-                        <a href=".services-section" class="nav-link">SERVICES</a>
-                        <a href=".featured-projects" class="nav-link">PROJECTS</a>
-                        <a href=".contact-section" class="nav-link">CONTACT</a>
-                    </div>
-                </div>
-            </nav>
-
             <div class="fixed-logo-container">
-                <img src="MAWJ_white.png" alt="Sizer" class="logo-sizer">
-                <img src="MAWJ_white.png" alt="Mawj Logo White" class="logo-white">
+                <img src="../MAWJ_white.png" alt="Sizer" class="logo-sizer">
+                <img src="../MAWJ_white.png" alt="Mawj Logo White" class="logo-white">
             </div>
 
             <!-- Full screen wrapper for Blue Logo -->
             <div class="logo-blue-wrapper-fullscreen">
-                <nav class="nav-container">
-                    <div class="nav-pill">
-                        <button class="nav-toggle" aria-label="Toggle Navigation">
-                            <div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </button>
-                        <div class="nav-links">
-                            <a href=".mission-section" class="nav-link">MISSION</a>
-                            <a href=".services-section" class="nav-link">SERVICES</a>
-                            <a href=".featured-projects" class="nav-link">PROJECTS</a>
-                            <a href=".contact-section" class="nav-link">CONTACT</a>
-                        </div>
-                    </div>
-                </nav>
-
                 <!-- Centered container to match the fixed logo position -->
                 <div class="logo-blue-positioner">
                     <div class="logo-blue"></div>
@@ -94,93 +83,50 @@
 
     <div class="content">
         <section class="mission-section">
-            <h2 class="mission-title">Our Mission</h2>
-            <p class="mission-text">
-                At MAWJ, our mission is to bring businesses online by creating powerful, modern, and accessible websites
-                that help them grow. Inspired by the meaning of our name — MAWJ (موج), the wave — we aim to be the force
-                that carries businesses into the digital world with confidence and momentum.
-            </p>
-            <br>
-            <p class="mission-text">
-                We believe every business, whether small or large, deserves a strong online presence. Our goal is to
-                remove barriers to going online by delivering clear design, reliable technology, and solutions tailored
-                to each client’s needs. We don’t just build websites — we create digital waves that help businesses
-                stand out, connect with their audience, and move forward in an ever-evolving digital landscape.
-            </p>
+            <h2 class="mission-title" data-cms-id="mission-title">Our Mission</h2>
+            <div data-cms-id="mission-content">
+                <p class="mission-text">
+                    At MAWJ, our mission is to bring businesses online by creating powerful, modern, and accessible
+                    websites
+                    that help them grow. Inspired by the meaning of our name — MAWJ (موج), the wave — we aim to be the
+                    force
+                    that carries businesses into the digital world with confidence and momentum.
+                </p>
+                <br>
+                <p class="mission-text">
+                    We believe every business, whether small or large, deserves a strong online presence. Our goal is to
+                    remove barriers to going online by delivering clear design, reliable technology, and solutions
+                    tailored
+                    to each client’s needs. We don’t just build websites — we create digital waves that help businesses
+                    stand out, connect with their audience, and move forward in an ever-evolving digital landscape.
+                </p>
+            </div>
         </section>
 
         <section class="services-section">
-            <h2 class="services-title">Our Services</h2>
+            <h2 class="services-title" data-cms-id="services-title">Our Services</h2>
             <div class="services-grid">
-                <!-- Landing Pages -->
                 <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
-                            <path d="M3 9h18" />
-                            <path d="M9 21V9" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Landing Pages</h3>
-                        <p>High-conversion designs crafted to turn visitors into loyal customers.</p>
-                    </div>
+                    <h3>Business Dashboards</h3>
                 </div>
-
-                <!-- Portfolios -->
                 <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <path d="M22 7L12.4 18.6a2 2 0 0 1-2.9 0L2 10" />
-                            <path d="M22 7L12.4 18.6a2 2 0 0 0-2.9 0L2 7" />
-                            <path d="M2 7v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Portfolios</h3>
-                        <p>Showcase your expertise with stunning, personal branding that stands out.</p>
-                    </div>
+                    <h3>Landing Pages</h3>
                 </div>
-
-                <!-- Business Websites -->
                 <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Business Websites</h3>
-                        <p>Scalable, professional platforms designed to grow your enterprise.</p>
-                    </div>
+                    <h3>Portfolios</h3>
                 </div>
-
-                <!-- Dashboards & Tools -->
                 <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <rect x="3" y="3" width="7" height="9" />
-                            <rect x="14" y="3" width="7" height="5" />
-                            <rect x="14" y="12" width="7" height="9" />
-                            <rect x="3" y="16" width="7" height="5" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Dashboards</h3>
-                        <p>Powerful data visualization and management tools for your business logic.</p>
-                    </div>
+                    <h3>Personal Websites</h3>
+                </div>
+                <div class="service-card">
+                    <h3>Business Websites</h3>
                 </div>
             </div>
         </section>
 
 
         <section class="featured-projects">
-            <h2 class="services-title">Featured Projects</h2>
+            <h2 class="services-title" data-cms-id="featured-projects-title">Featured Projects</h2>
             <div id="projects-container">
                 <!-- Projects will be injected here via JS -->
             </div>
@@ -202,8 +148,8 @@
                 </svg>
             </div>
             <div class="contact-content">
-                <img src="MAWJ_white.png" alt="Mawj Logo" class="contact-logo">
-                <h2 class="contact-title">Ready to Ride the Wave?</h2>
+                <img src="../MAWJ_white.png" alt="Mawj Logo" class="contact-logo">
+                <h2 class="contact-title" data-cms-id="footer-title">Ready to Ride the Wave?</h2>
                 <div class="contact-links">
                     <!-- Action Buttons Row -->
                     <div class="contact-actions">
@@ -277,12 +223,16 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="firebase-config.js"></script>
-
-    <script src="script.js"></script>
+    <!-- Point to parent JS -->
+    <script src="../script.js"></script>
+    <script>
+        // Activate Admin Editing Features
+        window.addEventListener('load', () => {
+            if (typeof enableAdminEditing === 'function') {
+                enableAdminEditing();
+            }
+        });
+    </script>
 </body>
 
 </html>
