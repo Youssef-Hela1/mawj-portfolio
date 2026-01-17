@@ -33,13 +33,13 @@ function updateUI() {
         }
     }
 
-    // Toggle navbar & logo position/shadow
-    const scrolledElements = document.querySelectorAll('.nav-container, .fixed-logo-container');
-    scrolledElements.forEach(el => {
+    // Toggle navbar position
+    const navContainers = document.querySelectorAll('.nav-container');
+    navContainers.forEach(nav => {
         if (window.scrollY > 50) {
-            el.classList.add('scrolled');
+            nav.classList.add('scrolled');
         } else {
-            el.classList.remove('scrolled');
+            nav.classList.remove('scrolled');
         }
     });
 
