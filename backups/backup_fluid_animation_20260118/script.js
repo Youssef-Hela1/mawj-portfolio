@@ -1,12 +1,6 @@
 // Fade-in animation for mission section
 const missionSection = document.querySelector('.mission-section');
 const servicesSection = document.querySelector('.services-section');
-const brandOverlay = document.querySelector('.brand-overlay');
-
-// --- Force Animation Reset on Load ---
-// Prevents browser from restoring "active" state on refresh, ensuring animation plays
-if (brandOverlay) brandOverlay.classList.remove('split-active');
-if (missionSection) missionSection.classList.remove('reveal');
 
 
 const observer = new IntersectionObserver((entries) => {
@@ -20,11 +14,9 @@ const observer = new IntersectionObserver((entries) => {
     threshold: 0.1 // Trigger when 10% visible
 });
 
-// if (missionSection) {
-//    observer.observe(missionSection);
-// }
-
-// --- Dynamic Services Theme Switcher Removed (Reverted to Static Grid) ---
+if (missionSection) {
+    observer.observe(missionSection);
+}
 if (servicesSection) {
     observer.observe(servicesSection);
 }
@@ -114,36 +106,17 @@ function updateUI() {
     }
 
     // --- Scroll Locking Logic ---
-    // --- Scroll Locking Logic ---
-    // --- Scroll Locking Logic ---
-    // brandOverlay and missionSection are now globally defined at top
-
+    const brandOverlay = document.querySelector('.brand-overlay');
     // Lock point: 100% of viewport
     const lockLimit = window.innerHeight;
 
     if (brandOverlay) {
-        // Scroll Locking Logic
-        const isSplitActive = brandOverlay.classList.contains('split-active'); // Check if active
-
         if (window.scrollY > lockLimit) {
             brandOverlay.style.position = 'absolute';
             brandOverlay.style.top = lockLimit + 'px';
-
-            // Only lock Mission if split is active
-            if (missionSection && isSplitActive) {
-                missionSection.style.position = 'absolute';
-                missionSection.style.top = '0px';
-                // Corrected: Sit at top of Content (relative parent)
-            }
         } else {
             brandOverlay.style.position = 'fixed';
             brandOverlay.style.top = '0px';
-
-            // Only lock Mission if split is active
-            if (missionSection && isSplitActive) {
-                missionSection.style.position = 'fixed';
-                missionSection.style.top = '0px';
-            }
         }
     }
 
@@ -185,30 +158,15 @@ function updateUI() {
     const bluePositioner = document.querySelector('.logo-blue-positioner');
 
     // --- Split-View Animation Logic with Delay ---
-    // Trigger Point: 100vh
-    const splitTriggerPoint = window.innerHeight;
-    // Reset Point: 50px (Very Top)
-    const resetPoint = 50;
+    const isSplitActive = window.scrollY > window.innerHeight;
+    const missionSection = document.querySelector('.mission-section');
 
-    const isActive = brandOverlay.classList.contains('split-active');
-    const scrollY = window.scrollY;
-
-    if (scrollY > splitTriggerPoint) {
-        // ACTIVATION LOGIC
-        // Only start timer if not already active and no timer running, AND not on mobile
-        if (!isActive && !window.splitAnimationTimer && window.innerWidth > 768) {
+    if (isSplitActive) {
+        // Only start timer if not already active and no timer running
+        if (!brandOverlay.classList.contains('split-active') && !window.splitAnimationTimer) {
             window.splitAnimationTimer = setTimeout(() => {
                 if (brandOverlay) brandOverlay.classList.add('split-active');
-
-                // --- Robust Synchronized Timer (1.2s matches CSS) ---
-                // Trigger Mission Section exactly 1.2s after animation starts
-                window.missionRevealTimer = setTimeout(() => {
-                    // Check if we are still active
-                    if (brandOverlay.classList.contains('split-active')) {
-                        if (missionSection) missionSection.classList.add('reveal');
-                    }
-                    window.missionRevealTimer = null;
-                }, 1200);
+                if (missionSection) missionSection.classList.add('reveal');
 
                 // Clear inline transforms to let CSS Take Control for the animation
                 if (logoContainer) logoContainer.style.transform = '';
@@ -219,44 +177,22 @@ function updateUI() {
                 window.splitAnimationTimer = null; // Reset timer flag
             }, 500); // 0.5 Second Delay
         }
+
     } else {
-        // BELOW TRIGGER POINT (scrollY <= 100vh)
-
-        // 1. If currently ACTIVE, check if we should RESET
-        if (isActive) {
-            // Only reset if we are near the very top
-            if (scrollY < resetPoint) {
-                if (brandOverlay) brandOverlay.classList.remove('split-active');
-                if (missionSection) {
-                    missionSection.classList.remove('reveal');
-                    // HARD RESET: Clear inline styles to snap back to 100vh
-                    missionSection.style.position = '';
-                    missionSection.style.top = '';
-                }
-
-                // Cancel pending Mission Reveal if user resets quickly
-                if (window.missionRevealTimer) {
-                    clearTimeout(window.missionRevealTimer);
-                    window.missionRevealTimer = null;
-                }
-            }
-            // ELSE: Stay active! (Sticky behavior)
+        // User scrolled back up - CANCEL everything
+        if (window.splitAnimationTimer) {
+            clearTimeout(window.splitAnimationTimer);
+            window.splitAnimationTimer = null;
         }
 
-        // 2. If NOT active, handle normal behavior (Settle Animation & Timer Cancel)
-        else {
-            // User scrolled back up before timer fired - CANCEL timer
-            if (window.splitAnimationTimer) {
-                clearTimeout(window.splitAnimationTimer);
-                window.splitAnimationTimer = null;
-            }
+        if (brandOverlay) brandOverlay.classList.remove('split-active');
+        if (missionSection) missionSection.classList.remove('reveal');
 
-            // Apply Settle Animation (Only when NOT active)
-            if (logoContainer) logoContainer.style.transform = `translate(-50%, calc(-50% + ${settleOffset}px))`;
-            if (mawjText) mawjText.style.transform = `translate(-50%, ${settleOffset}px)`;
-            if (bluePositioner) bluePositioner.style.transform = `translate(-50%, calc(-50% + ${settleOffset}px))`;
-            subtitles.forEach(s => s.style.transform = `translate(-50.5%, ${settleOffset}px)`);
-        }
+        // Apply Settle Animation (Only when at top)
+        if (logoContainer) logoContainer.style.transform = `translate(-50%, calc(-50% + ${settleOffset}px))`;
+        if (mawjText) mawjText.style.transform = `translate(-50%, ${settleOffset}px)`;
+        if (bluePositioner) bluePositioner.style.transform = `translate(-50%, calc(-50% + ${settleOffset}px))`;
+        subtitles.forEach(s => s.style.transform = `translate(-50.5%, ${settleOffset}px)`);
     }
 
     // 3. Sync Logo Sizes (Already handles bluePositioner size)

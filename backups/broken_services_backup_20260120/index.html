@@ -115,71 +115,99 @@
 
         <section class="services-section">
             <h2 class="services-title">Our Services</h2>
-            <div class="services-grid">
-                <!-- Landing Pages -->
-                <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
-                            <path d="M3 9h18" />
-                            <path d="M9 21V9" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Landing Pages</h3>
-                        <p>High-conversion designs crafted to turn visitors into loyal customers.</p>
-                    </div>
-                </div>
+            <!-- Services Wrapper (Theme & Layout Controller) -->
+            <div class="services-wrapper theme-blue">
 
-                <!-- Portfolios -->
-                <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <path d="M22 7L12.4 18.6a2 2 0 0 1-2.9 0L2 10" />
-                            <path d="M22 7L12.4 18.6a2 2 0 0 0-2.9 0L2 7" />
-                            <path d="M2 7v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Portfolios</h3>
-                        <p>Showcase your expertise with stunning, personal branding that stands out.</p>
-                    </div>
-                </div>
+                <!-- Navigation Arrows (Outside Box) -->
+                <button class="nav-arrow left-arrow" aria-label="Previous Service">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <button class="nav-arrow right-arrow" aria-label="Next Service">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
 
-                <!-- Business Websites -->
-                <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Business Websites</h3>
-                        <p>Scalable, professional platforms designed to grow your enterprise.</p>
-                    </div>
-                </div>
+                <!-- Dynamic Services Viewport (The Glassy Box itself) -->
+                <div class="services-viewport">
+                    <div class="services-track">
 
-                <!-- Dashboards & Tools -->
-                <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <rect x="3" y="3" width="7" height="9" />
-                            <rect x="14" y="3" width="7" height="5" />
-                            <rect x="14" y="12" width="7" height="9" />
-                            <rect x="3" y="16" width="7" height="5" />
-                        </svg>
-                    </div>
-                    <div class="service-content">
-                        <h3>Dashboards</h3>
-                        <p>Powerful data visualization and management tools for your business logic.</p>
+                        <!-- Service 1: Landing Pages (Blue Theme) -->
+                        <div class="service-item" data-theme="blue">
+                            <div class="service-content-wrapper">
+                                <div class="service-icon-wrapper">
+                                    <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                                        <path d="M3 9h18" />
+                                        <path d="M9 21V9" />
+                                    </svg>
+                                </div>
+                                <div class="service-text">
+                                    <h3>Landing Pages</h3>
+                                    <p>High-conversion designs crafted to turn visitors into loyal customers.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service 2: Portfolios (White Theme) -->
+                        <div class="service-item" data-theme="white">
+                            <div class="service-content-wrapper">
+                                <div class="service-icon-wrapper">
+                                    <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5">
+                                        <path d="M22 7L12.4 18.6a2 2 0 0 1-2.9 0L2 10" />
+                                        <path d="M22 7L12.4 18.6a2 2 0 0 0-2.9 0L2 7" />
+                                        <path d="M2 7v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7" />
+                                    </svg>
+                                </div>
+                                <div class="service-text">
+                                    <h3>Portfolios</h3>
+                                    <p>Showcase your expertise with stunning, personal branding that stands out.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service 3: Business Websites (Blue Theme) -->
+                        <div class="service-item" data-theme="blue">
+                            <div class="service-content-wrapper">
+                                <div class="service-icon-wrapper">
+                                    <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                                    </svg>
+                                </div>
+                                <div class="service-text">
+                                    <h3>Business Websites</h3>
+                                    <p>Robust, scalable solutions designed to grow with your company.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service 4: Analytics (White Theme) -->
+                        <div class="service-item" data-theme="white">
+                            <div class="service-content-wrapper">
+                                <div class="service-icon-wrapper">
+                                    <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5">
+                                        <path d="M3 3v18h18" />
+                                        <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+                                    </svg>
+                                </div>
+                                <div class="service-text">
+                                    <h3>Analytics & SEO</h3>
+                                    <p>Data-driven strategies to boost visibility and optimize performance.</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
         </section>
 
 

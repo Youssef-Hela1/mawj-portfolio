@@ -10,8 +10,6 @@ body,
 html {
     width: 100%;
     height: 100%;
-    background-color: #0177BF;
-    /* Ensure overscroll is blue */
     /* Hide scrollbar */
     scrollbar-width: none;
     /* Firefox */
@@ -28,24 +26,15 @@ body::-webkit-scrollbar {
     width: 100%;
     height: 100vh;
     background-color: #0177BF;
-    /* Match Footer Blue to prevent white bottom bars */
     position: relative;
     display: flex;
     justify-content: center;
-    z-index: 50;
-    /* Ensure Splash sits above Content */
 }
 
 .content {
     width: 100%;
-    min-height: auto;
-    /* Allow shrinking to fit content */
+    min-height: 300vh;
     background-color: white;
-    position: relative;
-    z-index: 1;
-    /* Explicitly lower than Splash */
-    padding-top: 1px;
-    /* Prevent margin collapse */
 }
 
 .scroll-indicator {
@@ -160,7 +149,6 @@ body::-webkit-scrollbar {
 }
 
 /* Full screen wrapper to establish viewport coordinate system for clip-path */
-/* Full screen wrapper to establish viewport coordinate system for clip-path */
 .logo-blue-wrapper-fullscreen {
     position: absolute;
     top: 0;
@@ -238,8 +226,7 @@ body::-webkit-scrollbar {
     left: 0;
     width: 100%;
     line-height: 0;
-    z-index: 10;
-    /* Raised to overlap Mission Section White Background */
+    z-index: 0;
 }
 
 /* Responsive Subtitle */
@@ -366,23 +353,19 @@ body::-webkit-scrollbar {
     font-size: 1.2rem;
     color: #0177BF;
     max-width: 800px;
-    margin: 0;
-    /* Left align block */
+    margin: 0 auto;
+    /* Restored auto margin for centering */
     line-height: 1.6;
 }
 
 /* Services Section */
 .services-section {
     padding: 5vh 10% 2vh 10%;
+    /* Reduced bottom padding */
     text-align: center;
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 1s ease-out, transform 1s ease-out;
-    margin-top: 100vh;
-    /* Create space for the absolute Mission Section */
-    position: relative;
-    z-index: 2;
-    background-color: white;
 }
 
 .services-section.visible {
@@ -841,8 +824,8 @@ body::-webkit-scrollbar {
 .contact-content {
     background-color: #0177BF;
     text-align: center;
-    padding: 1rem 10% 15vh 10%;
-    /* Increased bottom padding for large screens */
+    padding: 1rem 10% 2.5rem 10%;
+    /* Reduced padding by half */
     color: white;
     margin-top: -5px;
     position: relative;
@@ -1398,508 +1381,5 @@ body::-webkit-scrollbar {
     .nav-link {
         font-size: 9px;
         letter-spacing: 0.5px;
-    }
-}
-
-/* --- Cinematic Split-View Animation --- */
-
-/* Vertical Divider - The Blue Line */
-/* Vertical Divider - The Blue Line */
-.vertical-divider {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scaleY(0);
-    width: 2px;
-    height: 60vh;
-    background-color: #0177BF;
-    border-radius: 4px;
-    opacity: 0;
-    /* Stagger 3: Line grows after subtitle moves */
-    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1) 0.3s, opacity 0.8s ease 0.3s;
-    z-index: 5002;
-    /* Above logo-white but below branding text */
-}
-
-/* Active State: Line Grows */
-/* Active State: Line Grows */
-.split-active .vertical-divider {
-    opacity: 1;
-    transform: translate(-50%, -50%) scaleY(1);
-}
-
-/* --- Base Transition for Smooth Reset --- */
-.fixed-logo-container,
-.logo-blue-positioner,
-.mawj-text,
-.subtitle-base,
-.subtitle-indigo {
-    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
-    /* Smooth Glide Back */
-}
-
-/* Hero Elements Shift Left - Elastic Stagger */
-.brand-overlay.split-active .fixed-logo-container,
-.brand-overlay.split-active .logo-blue-positioner {
-    left: 25%;
-    top: 35% !important;
-    /* Adjusted Spacing */
-    transform: translate(-50%, -50%) scale(0.85);
-    transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.brand-overlay.split-active .mawj-text {
-    left: 25%;
-    top: 42%;
-    /* Adjusted Spacing */
-    transform: translate(-50%, 0) scale(0.85);
-    transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s;
-}
-
-.brand-overlay.split-active .subtitle-base,
-.brand-overlay.split-active .subtitle-indigo {
-    left: 25%;
-    top: 75%;
-    /* Adjusted Spacing */
-    transform: translate(-50%, 0) scale(0.85);
-    transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
-}
-
-/* Mission Section - Right Slide In */
-/* Mission Section - Right Slide In */
-/* Mission Section - Right Slide In */
-/* Mission Section - Right Slide In */
-.mission-section {
-    position: absolute;
-    top: 0;
-    /* Start at top of content */
-    left: 50%;
-    width: 50%;
-    /* Split View: Right Side */
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    /* Left Align Content */
-    text-align: left;
-    /* Left Align Text */
-    padding: 0 6rem 0 4rem;
-    /* Restore padding */
-    background: #fff;
-    z-index: 5;
-
-    /* Reveal Animation constraints */
-    transform: translateY(50px);
-    /* Start slightly below */
-    opacity: 0;
-    transition: all 0.8s ease;
-}
-
-.mission-section.reveal {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-/* Override existing reveal */
-/*.mission-section.reveal {
-   transform: translateX(0);
-   opacity: 1;
-   transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 1s ease;
-   pointer-events: auto;
-}*/
-
-.mission-section.reveal {
-    /* When active, it stays at the split position */
-    transform: translateY(0);
-    opacity: 1;
-    /* Event-Driven Entry: Transition starts immediately when class is added (triggered by JS after logo finishes) */
-    transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 1s ease;
-    pointer-events: auto;
-    /* Enable interaction when visible */
-}
-
-/* --- Mobile Stacked View (< 768px) --- */
-@media (max-width: 768px) {
-
-    /* Hide Vertical Divider */
-    .vertical-divider {
-        display: none !important;
-    }
-
-    /* Stack Branding at Top */
-    .brand-overlay.split-active .fixed-logo-container,
-    .brand-overlay.split-active .logo-blue-positioner {
-        left: 50% !important;
-        /* Center horizontally */
-        top: 20% !important;
-        /* Move to top */
-        transform: translate(-50%, -50%) scale(0.65) !important;
-        /* Smaller scale */
-        transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .brand-overlay.split-active .mawj-text {
-        left: 50% !important;
-        top: 35% !important;
-        /* Below logo */
-        transform: translate(-50%, 0) scale(0.65) !important;
-        transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s;
-    }
-
-    .brand-overlay.split-active .subtitle-base,
-    .brand-overlay.split-active .subtitle-indigo {
-        left: 50% !important;
-        top: 45% !important;
-        /* Below text */
-        transform: translate(-50%, 0) scale(0.65) !important;
-        transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
-        width: 100%;
-        /* Ensure text doesn't wrap weirdly */
-        text-align: center;
-    }
-
-    /* Mission Section - Slide Up from Bottom */
-    .mission-section {
-        position: relative;
-        top: auto;
-        left: auto;
-        width: 100%;
-        height: auto;
-        transform: translateY(0);
-        /* Force visible immediately */
-        opacity: 1;
-        /* Force visible immediately */
-        margin-top: 0;
-        /* Reset margin */
-        padding-top: 70vh;
-        /* Drastically increased padding */
-        align-items: center;
-        /* Force Center on Mobile */
-        justify-content: flex-start;
-        /* Ensure padding pushes content down */
-        text-align: center;
-        /* Force Center Text on Mobile */
-        padding-left: 10%;
-        /* Balanced padding */
-        padding-right: 10%;
-    }
-
-    .mission-section.reveal {
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    /* Reset Services Section Margin on Mobile */
-    .services-section {
-        margin-top: 0;
-        /* Remove the huge gap */
-        padding-top: 2rem;
-    }
-}
-
-/* --- Dynamic Services Redesign --- */
-
-/* Wrapper: Controls Layout & Theme Scope */
-.services-wrapper {
-    position: relative;
-    width: 75vh;
-    /* Bigger Size */
-    max-width: 90vw;
-    aspect-ratio: 1 / 1;
-    margin: -15vh auto 4rem auto;
-    /* Aggressive Pull Up */
-
-    /* Transition for child elements inheritance */
-    transition: color 0.6s ease;
-}
-
-/* Viewport: The Glassy Box */
-.services-viewport {
-    width: 100%;
-    height: 100%;
-    border-radius: 40px;
-    /* Softer corners */
-    overflow: hidden;
-
-    /* Glassy Base */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    /* Smooth Transition for BG, Border, Shadow */
-    transition: background 0.6s ease,
-        box-shadow 0.6s ease,
-        border-color 0.6s ease;
-}
-
-/* Scroll Track */
-.services-track {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-}
-
-.services-track::-webkit-scrollbar {
-    display: none;
-}
-
-/* Individual Service Item */
-.service-item {
-    min-width: 100%;
-    height: 100%;
-    scroll-snap-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3rem;
-    box-sizing: border-box;
-}
-
-.service-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-width: 550px;
-    gap: 1.5rem;
-    /* Tighter gap for more content */
-}
-
-.service-text h3 {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    letter-spacing: -1.5px;
-    line-height: 1.1;
-}
-
-.service-text p {
-    font-size: 1.15rem;
-    /* Slightly smaller to fit */
-    line-height: 1.6;
-    font-weight: 400;
-    opacity: 0.9;
-    margin-bottom: 1.5rem;
-}
-
-/* Features List */
-.service-features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2rem 0;
-    text-align: left;
-    display: inline-block;
-}
-
-.service-features li {
-    font-size: 1.1rem;
-    margin-bottom: 0.8rem;
-    padding-left: 1.5rem;
-    position: relative;
-    opacity: 0.95;
-    font-weight: 500;
-}
-
-.service-features li::before {
-    content: '•';
-    /* Or specific icon */
-    position: absolute;
-    left: 0;
-    font-size: 1.2rem;
-    line-height: 1;
-}
-
-/* CTA Button */
-.service-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    border: 1px solid currentColor;
-}
-
-.service-cta .arrow {
-    transition: transform 0.3s ease;
-}
-
-.service-cta:hover {
-    padding-right: 2.5rem;
-    /* Expand */
-}
-
-.service-cta:hover .arrow {
-    transform: translateX(5px);
-}
-
-.service-icon-wrapper svg {
-    width: 80px;
-    height: 80px;
-    transition: stroke 0.6s ease, filter 0.6s ease;
-}
-
-/* --- Theme Classes (On Wrapper) --- */
-
-/* Blue Theme (Deep & Rich) */
-.services-wrapper.theme-blue .services-viewport {
-    background: linear-gradient(145deg, rgba(1, 119, 191, 0.9), rgba(0, 85, 140, 0.95));
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 30px 60px -10px rgba(1, 119, 191, 0.5),
-        0 10px 20px -5px rgba(0, 0, 0, 0.1);
-}
-
-.services-wrapper.theme-blue {
-    color: #ffffff;
-}
-
-.services-wrapper.theme-blue .service-icon-wrapper svg {
-    stroke: #ffffff;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-}
-
-.services-wrapper.theme-blue .service-cta {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.services-wrapper.theme-blue .service-cta:hover {
-    background: #fff;
-    color: #0177BF;
-}
-
-.services-wrapper.theme-blue .nav-arrow {
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.services-wrapper.theme-blue .nav-arrow:hover {
-    background: #ffffff;
-    color: #0177BF;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-}
-
-
-/* White Theme (Clean & Bright) */
-.services-wrapper.theme-white .services-viewport {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.9));
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 30px 60px -10px rgba(175, 195, 255, 0.4),
-        0 10px 20px -5px rgba(0, 0, 0, 0.05);
-}
-
-.services-wrapper.theme-white {
-    color: #0177BF;
-}
-
-.services-wrapper.theme-white .service-icon-wrapper svg {
-    stroke: #0177BF;
-    filter: drop-shadow(0 0 10px rgba(1, 119, 191, 0.2));
-}
-
-.services-wrapper.theme-white .service-cta {
-    color: #0177BF;
-    background: rgba(1, 119, 191, 0.05);
-}
-
-.services-wrapper.theme-white .service-cta:hover {
-    background: #0177BF;
-    color: #fff;
-}
-
-.services-wrapper.theme-white .nav-arrow {
-    background: rgba(255, 255, 255, 0.6);
-    color: #0177BF;
-    border: 1px solid rgba(1, 119, 191, 0.1);
-    box-shadow: 0 10px 20px rgba(1, 119, 191, 0.1);
-}
-
-.services-wrapper.theme-white .nav-arrow:hover {
-    background: #0177BF;
-    color: #ffffff;
-    box-shadow: 0 0 20px rgba(1, 119, 191, 0.3);
-}
-
-
-/* --- Navigation Arrows --- */
-.nav-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    outline: none;
-}
-
-.nav-arrow:active {
-    transform: translateY(-50%) scale(0.92);
-}
-
-.nav-arrow svg {
-    width: 28px;
-    height: 28px;
-    stroke-width: 2.5;
-}
-
-.left-arrow {
-    left: -100px;
-}
-
-.right-arrow {
-    right: -100px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .services-wrapper {
-        width: 85vw;
-        max-width: 85vw;
-        aspect-ratio: 1/1.3;
-        /* Taller on mobile to fit content */
-        height: auto;
-    }
-
-    .services-viewport {
-        border-radius: 24px;
-    }
-
-    .service-text h3 {
-        font-size: 2rem;
-    }
-
-    .service-text p {
-        font-size: 1rem;
-    }
-
-    .service-icon-wrapper svg {
-        width: 60px;
-        height: 60px;
-    }
-
-    .nav-arrow {
-        display: none;
-    }
-
-    .service-item {
-        padding: 1.5rem;
     }
 }

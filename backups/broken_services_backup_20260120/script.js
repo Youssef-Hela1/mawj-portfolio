@@ -24,7 +24,45 @@ const observer = new IntersectionObserver((entries) => {
 //    observer.observe(missionSection);
 // }
 
-// --- Dynamic Services Theme Switcher Removed (Reverted to Static Grid) ---
+// --- Dynamic Services Theme Switcher ---
+const servicesWrapper = document.querySelector('.services-wrapper');
+const servicesViewport = document.querySelector('.services-viewport');
+const servicesTrack = document.querySelector('.services-track');
+const serviceItems = document.querySelectorAll('.service-item');
+
+if (servicesWrapper && servicesViewport && servicesTrack && serviceItems.length > 0) {
+    const themeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const theme = entry.target.dataset.theme;
+                // Switch Theme Class on Wrapper (controls arrows + box)
+                servicesWrapper.classList.remove('theme-blue', 'theme-white');
+                servicesWrapper.classList.add(`theme-${theme}`);
+            }
+        });
+    }, {
+        root: servicesTrack,
+        threshold: 0.6
+    });
+
+    serviceItems.forEach(item => themeObserver.observe(item));
+
+    // Arrow Navigation Logic
+    const leftArrow = document.querySelector('.left-arrow');
+    const rightArrow = document.querySelector('.right-arrow');
+
+    if (leftArrow && rightArrow) {
+        const scrollAmount = () => servicesViewport.clientWidth; // Scroll one full viewport width
+
+        leftArrow.addEventListener('click', () => {
+            servicesTrack.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+        });
+
+        rightArrow.addEventListener('click', () => {
+            servicesTrack.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+        });
+    }
+}
 if (servicesSection) {
     observer.observe(servicesSection);
 }
@@ -132,8 +170,7 @@ function updateUI() {
             // Only lock Mission if split is active
             if (missionSection && isSplitActive) {
                 missionSection.style.position = 'absolute';
-                missionSection.style.top = '0px';
-                // Corrected: Sit at top of Content (relative parent)
+                missionSection.style.top = lockLimit + 'px';
             }
         } else {
             brandOverlay.style.position = 'fixed';
@@ -195,8 +232,8 @@ function updateUI() {
 
     if (scrollY > splitTriggerPoint) {
         // ACTIVATION LOGIC
-        // Only start timer if not already active and no timer running, AND not on mobile
-        if (!isActive && !window.splitAnimationTimer && window.innerWidth > 768) {
+        // Only start timer if not already active and no timer running
+        if (!isActive && !window.splitAnimationTimer) {
             window.splitAnimationTimer = setTimeout(() => {
                 if (brandOverlay) brandOverlay.classList.add('split-active');
 
