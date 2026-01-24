@@ -1596,6 +1596,97 @@ body::-webkit-scrollbar {
         /* Remove the huge gap */
         padding-top: 2rem;
     }
+
+    /* Powered By Mobile Alignment */
+    .tech-logos {
+        justify-content: center !important;
+    }
+
+    .powered-by-container {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        margin-top: 3rem;
+        padding-bottom: 2rem;
+        background: transparent;
+    }
+}
+
+/* --- Powered By Section --- */
+.powered-by-container {
+    position: absolute;
+    bottom: 5vh;
+    left: 0;
+    transform: translateX(-50%);
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.powered-by-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    color: #0177BF;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.tech-logos {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.tech-logo-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tech-logo-img {
+    height: 35px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.tech-logo-item:hover .tech-logo-img {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.logo-label {
+    position: absolute;
+    bottom: -25px;
+    /* Position below the icon */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: #0177BF;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-family: 'Outfit', sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.tech-logo-item:hover .logo-label {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 
 /* --- Dynamic Services Redesign --- */
